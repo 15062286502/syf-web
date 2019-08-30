@@ -1,18 +1,30 @@
 <template>
   <div class="login">
-    <img src="../assets/hello.jpg">
-    <div>
-      用户名：
-     <el-input  v-model="name" placeholder="请输入用户名" ></el-input>
-      {{error1}}
-    </div>
-  <br/>
-    <div>
-      密码：&nbsp;&nbsp;&nbsp;&nbsp;
-    <el-input  v-model="password" placeholder="请输入密码" show-password ></el-input>
-      {{error2}}
-    </div>
-    <button @click="login">登录</button>
+  <div>
+    <el-row type="flex"  justify="center">
+      <el-col span="6">
+        <div class="grid-content">用户名：
+        <el-input  v-model="name" placeholder="请输入用户名" ></el-input>
+        </div>
+      </el-col>
+      <el-col span="2">
+        <div class="grid-content" id="error1">{{error1}}</div>
+      </el-col>
+    </el-row>
+    <el-row type="flex"  justify="center">
+      <el-col span="6">
+        <div class="grid-content">
+          密码：&nbsp;&nbsp;&nbsp;&nbsp;
+          <el-input  v-model="password" placeholder="请输入密码" show-password ></el-input>
+        </div>
+      </el-col>
+      <el-col span="2">
+        <div class="grid-content" id="error2">{{error2}}</div>
+      </el-col>
+    </el-row>
+    <el-button type="primary" @click="login">登录</el-button>
+    <div id="error3">{{error3}}</div>
+  </div>
   </div>
 </template>
 
@@ -24,7 +36,8 @@ export default {
       name: '',
       password: '',
       error1: '',
-      error2: ''
+      error2: '',
+      error3: ''
     }
   },
   methods: {
@@ -49,6 +62,8 @@ export default {
               query: {res}
             }
             )
+          } else {
+            this.error3 = '用户名密码错误'
           }
         })
           .catch(res => {
@@ -63,5 +78,37 @@ export default {
 <style scoped>
   .el-input{
     width:300px
+  }
+  .el-row {
+    margin-bottom: 20px;
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
+  #error1 , #error2 ,#error3{
+    color: red;
+  }
+  .login{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-image: url("../assets/hello.jpg");
   }
 </style>
