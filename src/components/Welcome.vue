@@ -9,8 +9,11 @@ export default {
   name: 'Welcome',
   data () {
     return {
-      user: this.$route.query.res.data.name
+      user: ''
     }
+  },
+  created () {
+    this.user = JSON.parse(this.$route.query.response)
   }
 }
 </script>

@@ -1,17 +1,17 @@
 <template>
   <div class="login">
-    <el-form :rules="rules" class="login-container" label-position="left"
+    <el-form :model="formLogin" :rules="rules" ref="formLogin" class="login-container" label-position="left"
              label-width="0px" v-loading="loading">
       <h3 class="login_title">系统登录</h3>
-      <el-form-item prop="account">
-        <el-input type="text" v-model="name"
+      <el-form-item prop="name">
+        <el-input type="text" v-model="formLogin.name"
                   auto-complete="off" placeholder="账号"></el-input>
       </el-form-item>
-      <el-form-item prop="checkPass">
-        <el-input type="password" v-model="password"
+      <el-form-item prop="password">
+        <el-input type="password" v-model="formLogin.password"
                   auto-complete="off" placeholder="密码"></el-input>
       </el-form-item>
-      {{error}}
+      <el-form-item class="error">{{error}}</el-form-item>
       <el-form-item style="width: 100%">
         <el-button type="primary" style="width: 100%;background: #505458;border: none" v-on:click="login">登录</el-button>
       </el-form-item>
@@ -24,29 +24,31 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      name: '',
-      password: '',
+      formLogin: {
+        name: null,
+        password: null
+      },
       error: '',
       rules: {
-        account: [{required: true, message: '请输入正确的用户名', trigger: 'blur'}],
-        checkPass: [{required: true, message: '请输入正确的密码', trigger: 'blur'}]
+        name: [{required: true, message: '请输入正确的用户名', trigger: 'blur'}],
+        password: [{required: true, message: '请输入正确的密码', trigger: 'blur'}]
       }
     }
   },
-  methods: {
-    login: function () {
+  'methods': {
+    'login': function () {
       this.$axios({
         method: 'post',
         url: '/home/login',
         params: {
-          'name': this.name,
-          'password': this.password
+          'name': this.formLogin.name,
+          'password': this.formLogin.password
         }
       }).then(res => {
-        if (res.data.password === this.password) {
+        if (res.data.password === this.formLogin.password) {
           this.$router.replace({
             path: '/welcome',
-            query: {res}
+            'query': {response: JSON.stringify(res.data.name)}
           }
           )
         } else {
@@ -89,5 +91,8 @@ export default {
     background: #fff;
     border: 1px solid #eaeaea;
     box-shadow: 0 0 25px #cac6c6;
+  }
+  .error{
+    color: red;
   }
 </style>
