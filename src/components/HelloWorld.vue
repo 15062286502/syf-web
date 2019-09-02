@@ -1,30 +1,21 @@
 <template>
   <div class="login">
-  <div>
-    <el-row type="flex"  justify="center">
-      <el-col span="6">
-        <div class="grid-content">用户名：
-        <el-input  v-model="name" placeholder="请输入用户名" ></el-input>
-        </div>
-      </el-col>
-      <el-col span="2">
-        <div class="grid-content" id="error1">{{error1}}</div>
-      </el-col>
-    </el-row>
-    <el-row type="flex"  justify="center">
-      <el-col span="6">
-        <div class="grid-content">
-          密码：&nbsp;&nbsp;&nbsp;&nbsp;
-          <el-input  v-model="password" placeholder="请输入密码" show-password ></el-input>
-        </div>
-      </el-col>
-      <el-col span="2">
-        <div class="grid-content" id="error2">{{error2}}</div>
-      </el-col>
-    </el-row>
-    <el-button type="primary" @click="login">登录</el-button>
-    <div id="error3">{{error3}}</div>
-  </div>
+    <el-form :rules="rules" class="login-container" label-position="left"
+             label-width="0px" v-loading="loading">
+      <h3 class="login_title">系统登录</h3>
+      <el-form-item prop="account">
+        <el-input type="text" v-model="name"
+                  auto-complete="off" placeholder="账号"></el-input>
+      </el-form-item>
+      <el-form-item prop="checkPass">
+        <el-input type="password" v-model="password"
+                  auto-complete="off" placeholder="密码"></el-input>
+      </el-form-item>
+      {{error}}
+      <el-form-item style="width: 100%">
+        <el-button type="primary" style="width: 100%;background: #505458;border: none" v-on:click="login">登录</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -35,80 +26,68 @@ export default {
     return {
       name: '',
       password: '',
-      error1: '',
-      error2: '',
-      error3: ''
+      error: '',
+      rules: {
+        account: [{required: true, message: '请输入正确的用户名', trigger: 'blur'}],
+        checkPass: [{required: true, message: '请输入正确的密码', trigger: 'blur'}]
+      }
     }
   },
   methods: {
     login: function () {
-      this.error1 = ''
-      this.error2 = ''
-      if (this.name.length === 0 && this.name === '') {
-        this.error1 = '用户名不能为空'
-      } else if (this.password.length === 0 && this.password === '') {
-        this.error2 = '密码不能为空'
-      } else {
-        this.$axios({
-          method: 'post',
-          url: '/home/login',
-          params: {'name': this.name,
-            'password': this.password
+      this.$axios({
+        method: 'post',
+        url: '/home/login',
+        params: {
+          'name': this.name,
+          'password': this.password
+        }
+      }).then(res => {
+        if (res.data.password === this.password) {
+          this.$router.replace({
+            path: '/welcome',
+            query: {res}
           }
-        }).then(res => {
-          if (res.data.password === this.password) {
-            this.$router.replace({
-              path: '/welcome',
-              query: {res}
-            }
-            )
-          } else {
-            this.error3 = '用户名密码错误'
-          }
+          )
+        } else {
+          this.error = '用户名或密码错误！'
+        }
+      })
+        .catch(res => {
+          alert('服务器错误')
         })
-          .catch(res => {
-            alert('服务器错误')
-          })
-      }
-    }}
+    }
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .el-input{
-    width:300px
+  .login {
+    background: url("../assets/eva1.jpg") no-repeat;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    position: fixed;
   }
-  .el-row {
-    margin-bottom: 20px;
+  .login_title {
+    margin: 0px auto 40px auto;
+    text-align: center;
+    color: #505458;
   }
-  .el-col {
-    border-radius: 4px;
+  .login_remember {
+    margin: 0px 0px 35px 0px;
+    text-align: left;
   }
-  .bg-purple-dark {
-    background: #99a9bf;
-  }
-  .bg-purple {
-    background: #d3dce6;
-  }
-  .bg-purple-light {
-    background: #e5e9f2;
-  }
-  .grid-content {
-    border-radius: 4px;
-    min-height: 36px;
-  }
-  .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
-  }
-  #error1 , #error2 ,#error3{
-    color: red;
-  }
-  .login{
-    position:absolute;
-    width:100%;
-    height:100%;
-    background-image: url("../assets/hello.jpg");
+  .login-container {
+    border-radius: 15px;
+    background-clip: padding-box;
+    margin: 90px auto;
+    width: 350px;
+    padding: 35px 35px 15px 35px;
+    background: #fff;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 0 25px #cac6c6;
   }
 </style>
