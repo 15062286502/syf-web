@@ -11,27 +11,12 @@
         </el-header>
         <el-container>
         <el-aside width="200px">
-          <el-menu :default-openeds="['1', '3']">
-            <el-submenu index="1">
-              <template slot="title"><i class="el-icon-message"></i>导航一</template>
+          <el-menu :default-openeds="['1', '3']" v-for="m in menulist" :key="m">
+            <el-submenu index="m.id">
+              <template slot="title"><i class="el-icon-message"></i>{{m.name}}</template>
               <el-menu-item-group>
-                <el-menu-item>选项1</el-menu-item>
-                <el-menu-item>选项2</el-menu-item>
+                <el-menu-item>111</el-menu-item>
               </el-menu-item-group>
-            </el-submenu>
-            <el-submenu index="2">
-              <template slot="title"><i class="el-icon-menu"></i>导航二</template>
-              <el-menu-item index="2-3">选项3</el-menu-item>
-              <el-submenu index="2-4">
-                <template slot="title">选项4</template>
-              </el-submenu>
-            </el-submenu>
-            <el-submenu index="3">
-              <template slot="title"><i class="el-icon-setting"></i>导航三</template>
-              <el-menu-item index="3-3">选项3</el-menu-item>
-              <el-submenu index="3-4">
-                <template slot="title">选项4</template>
-              </el-submenu>
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -54,11 +39,21 @@ export default {
   name: 'Welcome',
   data () {
     return {
-      user: ''
+      user: '',
+      menulist: []
     }
   },
   created () {
     this.user = JSON.parse(this.$route.query.response)
+    this.$axios({
+      method: 'post',
+      url: '/menus'
+    }).then(res => {
+      this.menulist = res.data
+    }
+    ).catch(res => {
+      alert('服务器错误')
+    })
   }
 }
 </script>
