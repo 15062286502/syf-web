@@ -14,8 +14,8 @@
           <el-menu :default-openeds="['1', '3']" v-for="m in menulist" :key="m">
             <el-submenu index="m.id">
               <template slot="title"><i class="el-icon-message"></i>{{m.name}}</template>
-              <el-menu-item-group>
-                <el-menu-item>111</el-menu-item>
+              <el-menu-item-group v-for="c in m.childMenus" :key="c">
+                <el-menu-item>{{c.name}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
