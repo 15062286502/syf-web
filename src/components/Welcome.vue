@@ -11,11 +11,11 @@
         </el-header>
         <el-container>
         <el-aside>
-          <el-menu :default-openeds="['1', '3']" v-for="m in menulist" :key="m">
+          <el-menu :default-openeds="['1', menulist.size]" v-for="m in menulist" :key="m" router>
             <el-submenu index="m.id">
               <template slot="title"><i class="el-icon-message"></i>{{m.name}}</template>
               <el-menu-item-group v-for="c in m.childMenus" :key="c">
-                <el-menu-item>{{c.name}}</el-menu-item>
+                <el-menu-item :index="c.url">{{c.name}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
@@ -29,6 +29,7 @@
               <el-table-column prop="address" label="地址">
               </el-table-column>
             </el-table>
+            <router-view/>
           </el-main>
         </el-container>
         <el-footer>
