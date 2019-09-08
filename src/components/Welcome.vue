@@ -12,7 +12,7 @@
         <el-container>
         <el-aside>
           <el-menu :default-openeds="['1', menulist.size]" v-for="m in menulist" :key="m" router>
-            <el-submenu index="m.id">
+            <el-submenu :index="m.id">
               <template slot="title"><i class="el-icon-message"></i>{{m.name}}</template>
               <el-menu-item-group v-for="c in m.childMenus" :key="c">
                 <el-menu-item :index="c.url">{{c.name}}</el-menu-item>
