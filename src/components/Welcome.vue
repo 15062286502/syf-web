@@ -33,18 +33,19 @@
           </el-main>
         </el-container>
         <el-footer>
-          <span>Copyright © 2019 - 2019 . All Rights Reserved.南航syf版权所有</span>
+          <span>Copyright © 2019 - 2019 . All Rights Reserved.syf版权所有</span>
         </el-footer>
       </el-container>
 </template>
 
 <script>
+import store from '../../store'
 export default {
   name: 'Welcome',
   data () {
     return {
-      user: '',
-      menulist: []
+      user: store.fetch(),
+      menulist: store.getMenu()
     }
   },
   created () {
@@ -58,6 +59,20 @@ export default {
     ).catch(res => {
       alert('服务器错误')
     })
+  },
+  watch: {
+    user: {
+      handler: function (val, oldVal) {
+        store.save(val)
+      },
+      deep: true
+    },
+    menulist: {
+      handler: function (val, oldVal) {
+        store.saveMenu(val)
+      },
+      deep: true
+    }
   }
 }
 </script>

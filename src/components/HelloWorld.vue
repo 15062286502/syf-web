@@ -46,9 +46,9 @@ export default {
         }
       }).then(res => {
         if (res.data.password === this.formLogin.password) {
-          this.$router.push({
+          this.$router.replace({
             path: '/welcome',
-            'query': {response: JSON.stringify(res.data.name)}
+            query: {response: JSON.stringify(res.data.name)}
           }
           )
         } else {

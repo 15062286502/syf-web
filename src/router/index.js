@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Welcome from '@/components/Welcome'
 import Test from '@/components/test'
+import Test1 from '@/components/test1'
 Vue.use(Router)
 
 export default new Router({
@@ -21,6 +22,11 @@ export default new Router({
           path: '/test',
           name: 'Test',
           component: Test
+        },
+        {
+          path: '/test1',
+          name: 'Test1',
+          component: Test1
         }
       ]
     }
