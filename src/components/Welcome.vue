@@ -4,9 +4,10 @@
           <el-dropdown>
             <i class="el-icon-setting" style="margin-right: 15px"></i>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>查看</el-dropdown-item>
+              <el-dropdown-item>退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+          <span>{{role}}</span>
           <span>{{user}}</span>
         </el-header>
         <el-container>
@@ -45,14 +46,17 @@ export default {
   data () {
     return {
       user: store.fetch(),
-      menulist: store.getMenu()
+      menulist: store.getMenu(),
+      role: store.getRole()
     }
   },
   created () {
-    this.user = JSON.parse(this.$route.query.response)
+    this.user = JSON.parse(this.$route.params.response)
+    this.role = JSON.parse(this.$route.params.role)
     this.$axios({
       method: 'post',
-      url: '/menus'
+      url: '/menus',
+      data: this.role
     }).then(res => {
       this.menulist = res.data
     }
@@ -70,6 +74,12 @@ export default {
     menulist: {
       handler: function (val, oldVal) {
         store.saveMenu(val)
+      },
+      deep: true
+    },
+    role: {
+      handler: function (val, oldVal) {
+        store.saveRole(val)
       },
       deep: true
     }

@@ -40,15 +40,16 @@ export default {
       this.$axios({
         method: 'post',
         url: '/home/login',
-        params: {
-          'name': this.formLogin.name,
-          'password': this.formLogin.password
-        }
+        data: this.formLogin
       }).then(res => {
         if (res.data.password === this.formLogin.password) {
           this.$router.replace({
             path: '/welcome',
-            query: {response: JSON.stringify(res.data.name)}
+            name: 'Welcome',
+            params: {
+              response: JSON.stringify(res.data.realName),
+              role: JSON.stringify(res.data.role)
+            }
           }
           )
         } else {
