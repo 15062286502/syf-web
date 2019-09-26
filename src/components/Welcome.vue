@@ -4,11 +4,11 @@
           <el-dropdown>
             <i class="el-icon-setting" style="margin-right: 15px"></i>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>退出登录</el-dropdown-item>
+              <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
           <span>{{role}}</span>
-          <span>{{user}}</span>
+          <span>{{realName}}</span>
         </el-header>
         <el-container>
         <el-aside>
@@ -22,14 +22,6 @@
           </el-menu>
         </el-aside>
           <el-main>
-            <el-table :data="tableData">
-              <el-table-column prop="date" label="日期" width="140">
-              </el-table-column>
-              <el-table-column prop="name" label="姓名" width="120">
-              </el-table-column>
-              <el-table-column prop="address" label="地址">
-              </el-table-column>
-            </el-table>
             <router-view/>
           </el-main>
         </el-container>
@@ -45,14 +37,14 @@ export default {
   name: 'Welcome',
   data () {
     return {
-      user: store.fetch(),
+      realName: store.fetch(),
       menulist: store.getMenu(),
       role: store.getRole()
     }
   },
   created () {
-    this.user = JSON.parse(this.$route.params.response)
-    this.role = JSON.parse(this.$route.params.role)
+    this.realName = this.$route.params.userInfo.realName
+    this.role = this.$route.params.userInfo.role
     this.$axios({
       method: 'post',
       url: '/menus',
@@ -65,7 +57,7 @@ export default {
     })
   },
   watch: {
-    user: {
+    realName: {
       handler: function (val, oldVal) {
         store.save(val)
       },
@@ -82,6 +74,12 @@ export default {
         store.saveRole(val)
       },
       deep: true
+    }
+  },
+  methods: {
+    logout: function () {
+      localStorage.clear()
+      this.$router.replace('/')
     }
   }
 }

@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Welcome from '@/components/Welcome'
 import Test from '@/components/test'
 import Test1 from '@/components/test1'
+import User from '@/components/UserManagement'
 Vue.use(Router)
 
 export default new Router({
@@ -27,6 +28,11 @@ export default new Router({
           path: '/test1',
           name: 'Test1',
           component: Test1
+        },
+        {
+          path: '/user',
+          name: 'User',
+          component: User
         }
       ]
     }

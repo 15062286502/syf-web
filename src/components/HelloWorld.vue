@@ -47,8 +47,7 @@ export default {
             path: '/welcome',
             name: 'Welcome',
             params: {
-              response: JSON.stringify(res.data.realName),
-              role: JSON.stringify(res.data.role)
+              userInfo: res.data
             }
           }
           )
