@@ -1,5 +1,5 @@
 <template>
-      <el-container style="height: 700px; border: 1px solid #eee">
+      <el-container style="height: 700px">
         <el-header>
           <el-dropdown>
             <i class="el-icon-setting" style="margin-right: 15px"></i>
@@ -9,10 +9,13 @@
           </el-dropdown>
           <span>{{role}}</span>
           <span>{{realName}}</span>
+          <Dropdown trigger="click" style="margin-right: 50px">
+            <img src="../assets/user.jpg">
+          </Dropdown>
         </el-header>
         <el-container>
         <el-aside>
-          <el-menu :default-openeds="['1', menulist.size]" v-for="m in menulist" :key="m" router>
+          <el-menu active-text-color="#ffd04b" text-color="#fff"  :default-openeds="['1', m.size]" v-for="m in menulist" :key="m" router>
             <el-submenu :index="m.id">
               <template slot="title"><i class="el-icon-message"></i>{{m.name}}</template>
               <el-menu-item-group v-for="c in m.childMenus" :key="c">
@@ -22,7 +25,7 @@
           </el-menu>
         </el-aside>
           <el-main>
-            <router-view/>
+             <router-view/>
           </el-main>
         </el-container>
         <el-footer>
@@ -87,7 +90,7 @@ export default {
 
 <style scoped>
   .el-header {
-    background-color: #B3C0D1;
+    background: #e9eaec;
     color: #333;
     line-height: 60px;
     text-align: right;
@@ -95,8 +98,7 @@ export default {
   }
 
   .el-aside {
-    background-color: #cac6c6;
-    color: #333;
+    background: #464c5b;
   }
   .el-main {
     color: #333;
@@ -107,9 +109,17 @@ export default {
     text-align: center;
   }
   .el-menu{
-    background-color:#cac6c6;
+    background: #464c5b;
   }
   .el-menu-item-group{
-    background-color: #cac6c6;
+    background: #464c5b;
+  }
+  img{
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 20px;
+    margin-top: 10px;
+    /*margin-right: 50px;*/
   }
 </style>
