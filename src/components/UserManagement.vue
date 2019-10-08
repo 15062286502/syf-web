@@ -66,10 +66,10 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="currentPage4"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size=this.pageInfo.pageSize
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400">
+          :total=this.total>
         </el-pagination>
       </el-main>
     </el-container>
@@ -83,19 +83,19 @@ export default {
   data () {
     return {
       tableData: [],
-      userQuery: ''
+      userQuery: '',
+      loginName: '',
+      pageInfo: {
+        page: 0,
+        pageSize: 10
+      },
+      total: 0
     }
   },
   created () {
-    this.$axios({
-      method: 'post',
-      url: '/home/usermanage',
-      data: this.role
-    }).then(res => {
-      this.tableData = res.data
-    }
-    ).catch(res => {
-      alert('服务器错误')
+    this.getTable({
+      'pageInfo': this.pageInfo,
+      'loginName': this.loginName
     })
   },
   methods: {
@@ -104,6 +104,22 @@ export default {
     },
     handleDelete (index, row) {
       console.log(index, row)
+    },
+    getTable (e) {
+      this.$axios({
+        method: 'get',
+        url: '/home/usermanage',
+        params: {
+          'page': e.pageInfo.page,
+          'pageSize': e.pageInfo.pageSize,
+          'loginName': e.loginName
+        }
+      }).then(res => {
+        this.tableData = res.data
+      }
+      ).catch(res => {
+        alert('服务器错误')
+      })
     }
   }
 }
