@@ -14,10 +14,10 @@
           <el-input
             prefix-icon="el-icon-search"
             placeholder="请输入内容"
-            v-model="userQuery"
+            v-model="loginName"
             clearable style="width: 300px">
           </el-input>
-          <el-button type="primary" icon="el-icon-search">搜索</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
         </div>
         </div>
         <el-table
@@ -63,8 +63,8 @@
           </el-table-column>
         </el-table>
         <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+          @size-change="e=>{sizeChangeSearch(e)}"
+          @current-change="e=>{pageSearch(e)}"
           :current-page="currentPage4"
           :page-sizes="[5, 10, 15, 20]"
           :page-size=this.pageInfo.pageSize
@@ -83,7 +83,6 @@ export default {
   data () {
     return {
       tableData: [],
-      userQuery: '',
       loginName: '',
       pageInfo: {
         page: 0,
@@ -115,10 +114,36 @@ export default {
           'loginName': e.loginName
         }
       }).then(res => {
-        this.tableData = res.data
+        this.tableData = res.data.data
+        this.total = res.data.total
       }
       ).catch(res => {
         alert('服务器错误')
+      })
+    },
+    pageSearch (e) {
+      this.pageInfo.page = e - 1
+      this.getTable({
+        'pageInfo': this.pageInfo,
+        'loginName': this.loginName
+      })
+    },
+    sizeChangeSearch (e) {
+      this.pageInfo.pageSize = e
+      this.getTable({
+        'pageInfo': this.pageInfo,
+        'loginName': this.loginName
+      })
+    },
+    initPageInfo () {
+      this.pageInfo.page = 0
+      this.pageInfo.pageSize = 10
+    },
+    search () {
+      this.initPageInfo()
+      this.getTable({
+        'pageInfo': this.pageInfo,
+        'loginName': this.loginName
       })
     }
   }
