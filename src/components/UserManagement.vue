@@ -102,7 +102,19 @@ export default {
       console.log(index, row)
     },
     handleDelete (index, row) {
-      console.log(index, row)
+      this.$axios({
+        method: 'post',
+        url: '/home/userDelete',
+        data: row.name
+      }).then(res => {
+        this.getTable({
+          'pageInfo': this.pageInfo,
+          'loginName': this.loginName
+        })
+      }
+      ).catch(res => {
+        alert('服务器错误')
+      })
     },
     getTable (e) {
       this.$axios({
