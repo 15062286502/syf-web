@@ -20,6 +20,7 @@
           <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
         </div>
         </div>
+        <el-button type="primary" icon="el-icon-plus"></el-button>
         <el-table
           :data="tableData"
           width="100"
@@ -68,7 +69,7 @@
         <el-pagination
           @size-change="e=>{sizeChangeSearch(e)}"
           @current-change="e=>{pageSearch(e)}"
-          :current-page="currentPage4"
+          :current-page="1"
           :page-sizes="[5, 10, 15, 20]"
           :page-size=this.pageInfo.pageSize
           layout="total, sizes, prev, pager, next, jumper"
@@ -89,7 +90,7 @@ export default {
       loginName: '',
       pageInfo: {
         page: 0,
-        pageSize: 10
+        pageSize: 5
       },
       total: 0
     }
@@ -110,6 +111,10 @@ export default {
         url: '/home/userDelete',
         data: row.name
       }).then(res => {
+        this.$message({
+          message: '删除成功',
+          type: 'success'
+        })
         this.getTable({
           'pageInfo': this.pageInfo,
           'loginName': this.loginName
