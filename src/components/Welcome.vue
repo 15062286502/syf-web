@@ -24,9 +24,7 @@
             </el-submenu>
           </el-menu>
         </el-aside>
-          <el-main>
              <router-view/>
-          </el-main>
         </el-container>
         <el-footer>
           <span>Copyright © 2019 - 2019 . All Rights Reserved.syf版权所有</span>

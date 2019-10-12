@@ -22,40 +22,43 @@
         </div>
         <el-table
           :data="tableData"
+          width="100"
           border
-          style="width: 100%"
           height="450"
         >
           <el-table-column
             prop="name"
             label="用户名"
-            width="180">
+            width="150"
+            >
           </el-table-column>
           <el-table-column
             prop="realName"
             label="真实姓名"
-            width="180">
+            width="200"
+            >
           </el-table-column>
           <el-table-column
             prop="role"
-            label="角色">
+            label="角色"
+            width="200">
           </el-table-column>
           <el-table-column
             prop="address"
-            label="地址">
+            label="地址"
+            width="200">
           </el-table-column>
           <el-table-column
             prop="phone"
-            label="联系方式">
+            label="联系方式"
+            width="200">
           </el-table-column>
-          <el-table-column label="操作">
+          <el-table-column label="操作" width="200">
             <template slot-scope="scope">
               <el-button
-                size="mini"
                 @click="handleEdit(scope.$index, scope.row)">编辑
               </el-button>
               <el-button
-                size="mini"
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)">删除
               </el-button>
@@ -164,8 +167,7 @@ export default {
 
 <style scoped>
   #query{
-    height: 100px;
-    background-color: red;
+    height: 50px;
   }
 #userquery{
     text-align: left;

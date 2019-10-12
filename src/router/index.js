@@ -5,6 +5,7 @@ import Welcome from '@/components/Welcome'
 import Test from '@/components/test'
 import Test1 from '@/components/test1'
 import User from '@/components/UserManagement'
+import Test3 from '@/components/test3'
 Vue.use(Router)
 
 export default new Router({
@@ -35,6 +36,11 @@ export default new Router({
           component: User
         }
       ]
+    },
+    {
+      path: '/test3',
+      name: 'Test3',
+      component: Test3
     }
   ]
 })
