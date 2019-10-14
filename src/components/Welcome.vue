@@ -39,13 +39,15 @@ export default {
   data () {
     return {
       realName: store.fetch(),
-      menulist: store.getMenu(),
+      menulist: [],
       role: store.getRole()
     }
   },
   created () {
     this.realName = this.$route.params.userInfo.realName
     this.role = this.$route.params.userInfo.role
+  },
+  mounted () {
     this.$axios({
       method: 'post',
       url: '/menus',
@@ -61,12 +63,6 @@ export default {
     realName: {
       handler: function (val, oldVal) {
         store.save(val)
-      },
-      deep: true
-    },
-    menulist: {
-      handler: function (val, oldVal) {
-        store.saveMenu(val)
       },
       deep: true
     },
