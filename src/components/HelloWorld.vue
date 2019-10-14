@@ -66,7 +66,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .login {
-    background: url("../assets/eva1.jpg") no-repeat;
+    background: url("../assets/timg.jpg") no-repeat;
     background-position: center;
     height: 100%;
     width: 100%;

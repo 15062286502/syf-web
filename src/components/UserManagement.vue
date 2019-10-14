@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 80%;height: 100%">
     <el-container>
       <el-header style="text-align: left;background-color: slategrey">
         <el-breadcrumb separator="/" style="margin-top: 25px">
@@ -10,7 +10,7 @@
       <el-main>
         <div id="query">
           <div id="userquery">
-          登录名：
+          用户名：
           <el-input
             prefix-icon="el-icon-search"
             placeholder="请输入内容"
@@ -20,41 +20,42 @@
           <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
         </div>
         </div>
-        <el-button type="primary" icon="el-icon-plus"></el-button>
+        <div id="add_user">
+          <el-button type="primary" icon="el-icon-plus" @click="openNewModal()">新增用户</el-button>
+        </div>
         <el-table
           :data="tableData"
-          width="100"
           border
           height="450"
+          width="100%"
         >
           <el-table-column
             prop="name"
             label="用户名"
-            width="150"
+            min-width="50%"
             >
           </el-table-column>
           <el-table-column
             prop="realName"
             label="真实姓名"
-            width="200"
             >
           </el-table-column>
           <el-table-column
             prop="role"
             label="角色"
-            width="200">
+          >
           </el-table-column>
           <el-table-column
             prop="address"
             label="地址"
-            width="200">
+            >
           </el-table-column>
           <el-table-column
             prop="phone"
             label="联系方式"
-            width="200">
+            >
           </el-table-column>
-          <el-table-column label="操作" width="200">
+          <el-table-column label="操作" >
             <template slot-scope="scope">
               <el-button
                 @click="handleEdit(scope.$index, scope.row)">编辑
@@ -75,6 +76,14 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total=this.total>
         </el-pagination>
+        <Modal :mask-closable="false" :visible.sync="newModal" :loading="loading" v-model="newModal" width="600"
+               title="新建"  @on-cancel="cancel()">
+          <Form ref="userNew"   :label-width="80">
+            <Form-item label="登录名:" >
+              <Input  style="width: 204px"/>
+            </Form-item>
+          </Form>
+        </Modal>
       </el-main>
     </el-container>
   </div>
@@ -92,6 +101,20 @@ export default {
         page: 0,
         pageSize: 5
       },
+      /* 新建modal的显示参数 */
+      newModal: false,
+      /* 用于添加的user实体 */
+      userNew: {
+        id: null,
+        name: null,
+        password: null,
+        passwordAgain: null,
+        realName: null,
+        role: null,
+        address: null,
+        phone: null
+      },
+      loading: false,
       total: 0
     }
   },
@@ -106,22 +129,33 @@ export default {
       console.log(index, row)
     },
     handleDelete (index, row) {
-      this.$axios({
-        method: 'post',
-        url: '/home/userDelete',
-        data: row.name
-      }).then(res => {
+      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios({
+          method: 'post',
+          url: '/home/userDelete',
+          data: row.name
+        }).then(res => {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+          this.getTable({
+            'pageInfo': this.pageInfo,
+            'loginName': this.loginName
+          })
+        }
+        ).catch(res => {
+          alert('服务器错误')
+        })
+      }).catch(() => {
         this.$message({
-          message: '删除成功',
-          type: 'success'
+          type: 'info',
+          message: '已取消删除'
         })
-        this.getTable({
-          'pageInfo': this.pageInfo,
-          'loginName': this.loginName
-        })
-      }
-      ).catch(res => {
-        alert('服务器错误')
       })
     },
     getTable (e) {
@@ -165,6 +199,15 @@ export default {
         'pageInfo': this.pageInfo,
         'loginName': this.loginName
       })
+    },
+    cancel () {
+      this.$message({
+        type: 'info',
+        message: '取消新增用户'
+      })
+    },
+    openNewModal () {
+      this.newModal = true
     }
   }
 }
@@ -177,4 +220,7 @@ export default {
 #userquery{
     text-align: left;
 }
+  #add_user{
+    margin-bottom: 9px;
+  }
 </style>
