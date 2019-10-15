@@ -21,7 +21,7 @@
         </div>
         </div>
         <div id="add_user">
-          <el-button type="primary" icon="el-icon-plus" @click="openNewModal()">新增用户</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增用户</el-button>
         </div>
         <el-table
           :data="tableData"
@@ -76,14 +76,41 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total=this.total>
         </el-pagination>
-        <Modal :mask-closable="false" :visible.sync="newModal" :loading="loading" v-model="newModal" width="600"
-               title="新建"  @on-cancel="cancel()">
-          <Form ref="userNew"   :label-width="80">
-            <Form-item label="登录名:" >
-              <Input  style="width: 204px"/>
-            </Form-item>
-          </Form>
-        </Modal>
+        <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="40%">
+          <el-form v-loading="loading" :model="userNew">
+            <el-form-item label="用户名" :label-width="formLabelWidth">
+              <el-input auto-complete="off" v-model="userNew.name"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
+              <el-input type="password" v-model="userNew.password"
+                        auto-complete="off" placeholder="密码"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="passwordAgain" :label-width="formLabelWidth">
+              <el-input type="password" v-model="userNew.passwordAgain"
+                        auto-complete="off" placeholder="确认密码"></el-input>
+            </el-form-item>
+            <el-form-item label="角色" :label-width="formLabelWidth">
+              <el-select  placeholder="请选择角色" v-model="userNew.role">
+                <el-option label="店长" value="店长"></el-option>
+                <el-option label="骑手" value="骑手"></el-option>
+                <el-option label="服务员" value="服务员"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="真实姓名" :label-width="formLabelWidth">
+              <el-input auto-complete="off" v-model="userNew.realName"></el-input>
+            </el-form-item>
+            <el-form-item label="地址" :label-width="formLabelWidth">
+              <el-input auto-complete="off" v-model="userNew.address"></el-input>
+            </el-form-item>
+            <el-form-item label="联系方式" :label-width="formLabelWidth">
+              <el-input auto-complete="off" v-model="userNew.phone"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="cancel">取 消</el-button>
+            <el-button type="primary" @click="addUserForm">确 定</el-button>
+          </div>
+        </el-dialog>
       </el-main>
     </el-container>
   </div>
@@ -101,8 +128,7 @@ export default {
         page: 0,
         pageSize: 5
       },
-      /* 新建modal的显示参数 */
-      newModal: false,
+      dialogFormVisible: false,
       /* 用于添加的user实体 */
       userNew: {
         id: null,
@@ -114,8 +140,8 @@ export default {
         address: null,
         phone: null
       },
-      loading: false,
-      total: 0
+      total: 0,
+      formLabelWidth: '80px'
     }
   },
   created () {
@@ -201,13 +227,27 @@ export default {
       })
     },
     cancel () {
+      this.dialogFormVisible = false
       this.$message({
         type: 'info',
         message: '取消新增用户'
       })
     },
-    openNewModal () {
-      this.newModal = true
+    addUserForm () {
+      this.dialogFormVisible = false
+      this.$axios({
+        method: 'post',
+        url: '/home/userAdd',
+        data: this.userNew
+      }).then(res => {
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        })
+      }
+      ).catch(res => {
+        alert('服务器错误')
+      })
     }
   }
 }
