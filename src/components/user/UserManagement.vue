@@ -76,7 +76,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total=this.total>
         </el-pagination>
-        <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="30%">
+        <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="30%" destroy-on-close="true">
           <el-form v-loading="loading" :model="userNew" :rules="add_rules">
             <el-form-item label="用户名" :label-width="formLabelWidth" prop="name">
               <el-input auto-complete="off" v-model="userNew.name"></el-input>
