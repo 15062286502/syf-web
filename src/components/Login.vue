@@ -13,7 +13,7 @@
       </el-form-item>
       <el-form-item class="error">{{error}}</el-form-item>
       <el-form-item style="width: 100%">
-        <el-button type="primary" style="width: 100%;background: #505458;border: none" v-on:click="login">登录</el-button>
+        <el-button type="primary" style="width: 100%;background: #505458;border: none" v-on:click="login('formLogin')">登录</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -35,29 +35,33 @@ export default {
       }
     }
   },
-  'methods': {
-    'login': function () {
-      this.$axios({
-        method: 'post',
-        url: '/home/login',
-        data: this.formLogin
-      }).then(res => {
-        if (res.data.password === this.formLogin.password) {
-          this.$router.replace({
-            path: '/welcome',
-            name: 'Welcome',
-            params: {
-              userInfo: res.data
+  methods: {
+    login (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$axios({
+            method: 'post',
+            url: '/home/login',
+            data: this.formLogin
+          }).then(res => {
+            if (res.data.password === this.formLogin.password) {
+              this.$router.replace({
+                path: '/welcome',
+                name: 'Welcome',
+                params: {
+                  userInfo: res.data
+                }
+              }
+              )
+            } else {
+              this.error = '用户名或密码错误！'
             }
-          }
-          )
-        } else {
-          this.error = '用户名或密码错误！'
+          })
+            .catch(res => {
+              alert('服务器错误')
+            })
         }
       })
-        .catch(res => {
-          alert('服务器错误')
-        })
     }
   }
 }

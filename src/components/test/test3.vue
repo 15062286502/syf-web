@@ -10,7 +10,7 @@
       <span>{{role}}</span>
       <span>{{realName}}</span>
       <Dropdown trigger="click" style="margin-right: 50px">
-        <img src="../assets/user.jpg">
+        <img src="../../assets/user.jpg">
       </Dropdown>
     </el-header>
     <el-container>
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import store from '../../store'
+import store from '../../../store'
 export default {
   name: 'Welcome',
   data () {
