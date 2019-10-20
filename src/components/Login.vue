@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import user from './user/user'
 export default {
   name: 'HelloWorld',
   data () {
@@ -30,8 +31,8 @@ export default {
       },
       error: '',
       rules: {
-        name: [{required: true, message: '请输入正确的用户名', trigger: 'blur'}],
-        password: [{required: true, message: '请输入正确的密码', trigger: 'blur'}]
+        name: [{validator: user.checkName, trigger: 'blur'}],
+        password: [{validator: user.checkPassword, trigger: 'blur'}]
       }
     }
   },

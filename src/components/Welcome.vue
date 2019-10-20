@@ -76,7 +76,7 @@ export default {
   methods: {
     logout: function () {
       localStorage.clear()
-      this.$router.replace('/login')
+      this.$router.replace('/')
     }
   }
 }
