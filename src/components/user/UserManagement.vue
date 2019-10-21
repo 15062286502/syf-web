@@ -327,13 +327,6 @@ export default {
         return callback(new Error('密码不能为空'))
       }
     },
-    checkRole (rule, value, callback) {
-      if (value) {
-        callback()
-      } else {
-        return callback(new Error('请选择角色'))
-      }
-    },
     closeDialog () {
       this.editUser.password = null
     },
@@ -341,7 +334,30 @@ export default {
       this.$refs[editUser].validate((valid) => {
         if (valid) {
           this.editFormVisible = false
+          this.$axios({
+            method: 'post',
+            url: '/home/userEdit',
+            data: this.editUser
+          })
         }
+      }).then(res => {
+        if (res.data === 'success') {
+          this.$message({
+            message: '修改成功',
+            type: 'success'
+          })
+          this.getTable({
+            'pageInfo': this.pageInfo,
+            'loginName': this.loginName
+          })
+        } else {
+          this.$message({
+            message: '修改失败',
+            type: 'error'
+          })
+        }
+      }).catch(res => {
+        alert('服务器错误')
       })
     }
   }
