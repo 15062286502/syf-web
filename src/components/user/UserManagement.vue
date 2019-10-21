@@ -111,7 +111,7 @@
             <el-button type="primary" @click="addUserForm('addUser')">确 定</el-button>
           </div>
         </el-dialog>
-        <el-dialog title="编辑用户" :visible.sync="editFormVisible" width="30%" destroy-on-close="true">
+        <el-dialog title="编辑用户" :visible.sync="editFormVisible" width="30%" destroy-on-close="true" @close="closeDialog">
           <el-form v-loading="loading" :model="editUser" :rules="add_rules" ref="editUser">
             <el-form-item label="用户名" :label-width="formLabelWidth" prop="name">
               <el-input auto-complete="off" v-model="editUser.name"></el-input>
@@ -316,8 +316,9 @@ export default {
     checkPasswordAgain (rule, value, callback) {
       let first = this.userNew.password
       let edit = this.editUser.password
+      console.log(edit + '--' + value)
       if (value) {
-        if (first !== value || edit !== value) {
+        if (first !== value && edit !== value) {
           return callback(new Error('密码不一致！'))
         } else {
           callback()
@@ -332,6 +333,16 @@ export default {
       } else {
         return callback(new Error('请选择角色'))
       }
+    },
+    closeDialog () {
+      this.editUser.password = null
+    },
+    editUserForm (editUser) {
+      this.$refs[editUser].validate((valid) => {
+        if (valid) {
+          this.editFormVisible = false
+        }
+      })
     }
   }
 }
