@@ -76,76 +76,8 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total=this.total>
         </el-pagination>
-        <el-dialog title="新增用户" :visible.sync="dialogFormVisible" width="30%" destroy-on-close="true">
-          <el-form v-loading="loading" :model="userNew" :rules="add_rules" ref="addUser">
-            <el-form-item label="用户名" :label-width="formLabelWidth" prop="name">
-              <el-input auto-complete="off" v-model="userNew.name"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
-              <el-input type="password" v-model="userNew.password"
-                        auto-complete="off" placeholder="密码"></el-input>
-            </el-form-item>
-            <el-form-item label="确认密码" prop="passwordAgain" :label-width="formLabelWidth">
-              <el-input type="password" v-model="userNew.passwordAgain"
-                        auto-complete="off" placeholder="确认密码"></el-input>
-            </el-form-item>
-            <el-form-item label="角色"  :label-width="formLabelWidth" prop="role">
-              <el-select  placeholder="请选择角色" v-model="userNew.role">
-                <el-option label="店长" value="店长"></el-option>
-                <el-option label="骑手" value="骑手"></el-option>
-                <el-option label="服务员" value="服务员"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="真实姓名" :label-width="formLabelWidth" prop="realName">
-              <el-input auto-complete="off" v-model="userNew.realName"></el-input>
-            </el-form-item>
-            <el-form-item label="地址" :label-width="formLabelWidth" prop="address">
-              <el-input auto-complete="off" v-model="userNew.address"></el-input>
-            </el-form-item>
-            <el-form-item label="联系方式" :label-width="formLabelWidth" prop="phone">
-              <el-input auto-complete="off" v-model="userNew.phone"></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="cancel">取 消</el-button>
-            <el-button type="primary" @click="addUserForm('addUser')">确 定</el-button>
-          </div>
-        </el-dialog>
-        <el-dialog title="编辑用户" :visible.sync="editFormVisible" width="30%" destroy-on-close="true" @close="closeDialog">
-          <el-form v-loading="loading" :model="editUser" :rules="edit_rules" ref="editUser">
-            <el-form-item label="用户名" :label-width="formLabelWidth" prop="name">
-              <el-input auto-complete="off" v-model="editUser.name"  :disabled="true"></el-input>
-            </el-form-item>
-            <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
-              <el-input type="password" v-model="editUser.password"
-                        auto-complete="off" placeholder="密码"></el-input>
-            </el-form-item>
-            <el-form-item label="确认密码" prop="passwordAgain" :label-width="formLabelWidth">
-              <el-input type="password" v-model="editUser.passwordAgain"
-                        auto-complete="off" placeholder="确认密码"></el-input>
-            </el-form-item>
-            <el-form-item label="角色"  :label-width="formLabelWidth" prop="role">
-              <el-select  placeholder="请选择角色" v-model="editUser.role">
-                <el-option label="店长" value="店长"></el-option>
-                <el-option label="骑手" value="骑手"></el-option>
-                <el-option label="服务员" value="服务员"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="真实姓名" :label-width="formLabelWidth" prop="realName">
-              <el-input auto-complete="off" v-model="editUser.realName"></el-input>
-            </el-form-item>
-            <el-form-item label="地址" :label-width="formLabelWidth" prop="address">
-              <el-input auto-complete="off" v-model="editUser.address"></el-input>
-            </el-form-item>
-            <el-form-item label="联系方式" :label-width="formLabelWidth" prop="phone">
-              <el-input auto-complete="off" v-model="editUser.phone"></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="cancel">取 消</el-button>
-            <el-button type="primary" @click="editUserForm('editUser')">确 定</el-button>
-          </div>
-        </el-dialog>
+        <user-add :add-state="dialogFormVisible" :submit="addUserForm" :user-new="userNew"></user-add>
+        <user-edit :edit-state="editFormVisible"  :edit-user="editUser" :close="closeDialog" :submit="editUserForm"></user-edit>
       </el-main>
     </el-container>
   </div>
@@ -153,9 +85,11 @@
 </template>
 
 <script>
-import user from './user'
+import UserAdd from '@/components/user/UserAdd'
+import UserEdit from '@/components/user/UserEdit'
 export default {
   name: 'UserManagement',
+  components: {UserEdit, UserAdd},
   data () {
     return {
       tableData: [],
@@ -177,25 +111,6 @@ export default {
         phone: null
       },
       total: 0,
-      formLabelWidth: '80px',
-      add_rules: {
-        name: [{validator: user.checkName, trigger: 'blur'}],
-        password: [{validator: user.checkPassword, trigger: 'blur'}],
-        realName: [{required: true, message: '请输入正确的真实姓名', trigger: 'blur'}],
-        passwordAgain: [{validator: this.checkAddPasswordAgain, message: '密码不一致', trigger: 'blur'}],
-        role: [{required: true, message: '请选择角色', trigger: ['blur', 'change']}],
-        address: [{required: true, message: '请输入正确的地址', trigger: 'blur'}],
-        phone: [{validator: user.checkPhone, trigger: 'blur'}]
-      },
-      edit_rules: {
-        name: [{validator: user.checkName, trigger: 'blur'}],
-        password: [{validator: user.checkPassword, trigger: 'blur'}],
-        realName: [{required: true, message: '请输入正确的真实姓名', trigger: 'blur'}],
-        passwordAgain: [{validator: this.checkEditPasswordAgain, message: '密码不一致', trigger: 'blur'}],
-        role: [{required: true, message: '请选择角色', trigger: ['blur', 'change']}],
-        address: [{required: true, message: '请输入正确的地址', trigger: 'blur'}],
-        phone: [{validator: user.checkPhone, trigger: 'blur'}]
-      },
       editFormVisible: false,
       editUser: []
     }
@@ -283,68 +198,32 @@ export default {
         'loginName': this.loginName
       })
     },
-    cancel () {
+    addUserForm () {
       this.dialogFormVisible = false
-      this.editFormVisible = false
-      this.$message({
-        type: 'info',
-        message: '取消操作'
-      })
-    },
-    addUserForm (addUser) {
-      this.$refs[addUser].validate((valid) => {
-        if (valid) {
-          this.dialogFormVisible = false
-          this.$axios({
-            method: 'post',
-            url: '/home/userAdd',
-            data: this.userNew
-          }).then(res => {
-            if (res.data === 'success') {
-              this.$message({
-                message: '添加成功',
-                type: 'success'
-              })
-              this.getTable({
-                'pageInfo': this.pageInfo,
-                'loginName': this.loginName
-              })
-            } else {
-              this.$message({
-                message: '该用户已存在',
-                type: 'error'
-              })
-            }
-          }
-          ).catch(res => {
-            alert('服务器错误')
+      this.$axios({
+        method: 'post',
+        url: '/home/userAdd',
+        data: this.userNew
+      }).then(res => {
+        if (res.data === 'success') {
+          this.$message({
+            message: '添加成功',
+            type: 'success'
+          })
+          this.getTable({
+            'pageInfo': this.pageInfo,
+            'loginName': this.loginName
+          })
+        } else {
+          this.$message({
+            message: '该用户已存在',
+            type: 'error'
           })
         }
+      }
+      ).catch(res => {
+        alert('服务器错误')
       })
-    },
-    checkAddPasswordAgain (rule, value, callback) {
-      let add = this.userNew.password
-      if (value) {
-        if (add !== value) {
-          return callback(new Error('密码不一致！'))
-        } else {
-          callback()
-        }
-      } else {
-        return callback(new Error('密码不能为空'))
-      }
-    },
-    checkEditPasswordAgain (rule, value, callback) {
-      let edit = this.editUser.password
-      if (value) {
-        if (edit !== value) {
-          return callback(new Error('密码不一致！'))
-        } else {
-          callback()
-        }
-      } else {
-        return callback(new Error('密码不能为空'))
-      }
     },
     closeDialog () {
       this.getTable({
@@ -352,27 +231,23 @@ export default {
         'loginName': this.loginName
       })
     },
-    editUserForm (editUser) {
-      this.$refs[editUser].validate((valid) => {
-        if (valid) {
-          this.editFormVisible = false
-          this.$axios({
-            method: 'post',
-            url: '/home/userEdit',
-            data: this.editUser
-          }).then(res => {
-            this.$message({
-              message: '修改成功',
-              type: 'success'
-            })
-            this.getTable({
-              'pageInfo': this.pageInfo,
-              'loginName': this.loginName
-            })
-          }).catch(res => {
-            alert('服务器错误')
-          })
-        }
+    editUserForm () {
+      this.editFormVisible = false
+      this.$axios({
+        method: 'post',
+        url: '/home/userEdit',
+        data: this.editUser
+      }).then(res => {
+        this.$message({
+          message: '修改成功',
+          type: 'success'
+        })
+        this.getTable({
+          'pageInfo': this.pageInfo,
+          'loginName': this.loginName
+        })
+      }).catch(res => {
+        alert('服务器错误')
       })
     }
   }
