@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="编辑用户" :visible.sync="edit_State" width="30%" destroy-on-close="true" @close="closeDialog">
+  <el-dialog title="编辑用户" :visible.sync="editState" width="30%" destroy-on-close="true" @close="close">
     <el-form v-loading="loading" :model="editUser" :rules="edit_rules" ref="editUser">
       <el-form-item label="用户名" :label-width="formLabelWidth" prop="name">
         <el-input auto-complete="off" v-model="editUser.name"  :disabled="true"></el-input>
@@ -48,9 +48,12 @@ export default {
       type: Function
     },
     editState: {
-      type: String
+      type: Boolean
     },
     submit: {
+      type: Function
+    },
+    editCancel: {
       type: Function
     }
   },
@@ -65,8 +68,7 @@ export default {
         address: [{required: true, message: '请输入正确的地址', trigger: 'blur'}],
         phone: [{validator: user.checkPhone, trigger: 'blur'}]
       },
-      formLabelWidth: '80px',
-      edit_State: this.editState
+      formLabelWidth: '80px'
     }
   },
   methods: {
@@ -81,16 +83,6 @@ export default {
       } else {
         return callback(new Error('密码不能为空'))
       }
-    },
-    editCancel () {
-      this.editState = false
-      this.$message({
-        type: 'info',
-        message: '取消操作'
-      })
-    },
-    closeDialog () {
-      this.close()
     }
   },
   editUserForm (editUser) {

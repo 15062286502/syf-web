@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增用户" :visible.sync="add_State" width="30%" destroy-on-close="true">
+  <el-dialog title="新增用户" :visible.sync="addState" width="30%" destroy-on-close="true">
     <el-form v-loading="loading" :model="userNew" :rules="add_rules" ref="addUser">
       <el-form-item label="用户名" :label-width="formLabelWidth" prop="name">
         <el-input auto-complete="off" v-model="userNew.name"></el-input>
@@ -48,7 +48,10 @@ export default {
       type: Object
     },
     addState: {
-      type: String
+      type: Boolean
+    },
+    addCancel: {
+      type: Function
     }
   },
   data () {
@@ -62,8 +65,7 @@ export default {
         address: [{required: true, message: '请输入正确的地址', trigger: 'blur'}],
         phone: [{validator: user.checkPhone, trigger: 'blur'}]
       },
-      formLabelWidth: '80px',
-      add_State: this.addState
+      formLabelWidth: '80px'
     }
   },
   methods: {
@@ -78,13 +80,6 @@ export default {
       } else {
         return callback(new Error('密码不能为空'))
       }
-    },
-    addCancel () {
-      this.addState = false
-      this.$message({
-        type: 'info',
-        message: '取消操作'
-      })
     },
     addUserForm (addUser) {
       this.$refs[addUser].validate((valid) => {

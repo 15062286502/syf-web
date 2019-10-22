@@ -76,8 +76,8 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total=this.total>
         </el-pagination>
-        <user-add :add-state="dialogFormVisible" :submit="addUserForm" :user-new="userNew"></user-add>
-        <user-edit :edit-state="editFormVisible"  :edit-user="editUser" :close="closeDialog" :submit="editUserForm"></user-edit>
+        <UserAdd  :addState="dialogFormVisible" :submit="addUserForm" :user-new="userNew" :add-cancel="addCancel"></UserAdd>
+        <UserEdit :edit-state="editFormVisible" :edit-user="editUser" :submit="editUserForm" :close="closeDialog" :edit-cancel="editCancel"></UserEdit>
       </el-main>
     </el-container>
   </div>
@@ -85,8 +85,8 @@
 </template>
 
 <script>
-import UserAdd from '@/components/user/UserAdd'
-import UserEdit from '@/components/user/UserEdit'
+import UserAdd from '../user/UserAdd'
+import UserEdit from '../user/UserEdit'
 export default {
   name: 'UserManagement',
   components: {UserEdit, UserAdd},
@@ -248,6 +248,20 @@ export default {
         })
       }).catch(res => {
         alert('服务器错误')
+      })
+    },
+    addCancel () {
+      this.dialogFormVisible = false
+      this.$message({
+        type: 'info',
+        message: '取消操作'
+      })
+    },
+    editCancel () {
+      this.editFormVisible = false
+      this.$message({
+        type: 'info',
+        message: '取消操作'
       })
     }
   }
