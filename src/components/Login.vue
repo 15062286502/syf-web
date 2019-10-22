@@ -11,6 +11,7 @@
         <el-input type="password" v-model="formLogin.password"
                   auto-complete="off" placeholder="密码"></el-input>
       </el-form-item>
+      <Slider :success-fun="sliderFun"></Slider>
       <el-form-item class="error">{{error}}</el-form-item>
       <el-form-item style="width: 100%">
         <el-button type="primary" style="width: 100%;background: #505458;border: none" v-on:click="login('formLogin')">登录</el-button>
@@ -21,8 +22,12 @@
 
 <script>
 import user from './user/user'
+import Slider from './tool/Slider'
 export default {
   name: 'HelloWorld',
+  components: {
+    Slider
+  },
   data () {
     return {
       formLogin: {
@@ -33,13 +38,14 @@ export default {
       rules: {
         name: [{validator: user.checkName, trigger: 'blur'}],
         password: [{validator: user.checkPassword, trigger: 'blur'}]
-      }
+      },
+      slider: ''
     }
   },
   methods: {
     login (formName) {
       this.$refs[formName].validate((valid) => {
-        if (valid) {
+        if (valid && this.slider === 'success') {
           this.$axios({
             method: 'post',
             url: '/home/login',
@@ -63,6 +69,9 @@ export default {
             })
         }
       })
+    },
+    sliderFun () {
+      this.slider = 'success'
     }
   }
 }
