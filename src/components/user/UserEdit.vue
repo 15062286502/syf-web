@@ -83,14 +83,14 @@ export default {
       } else {
         return callback(new Error('密码不能为空'))
       }
+    },
+    editUserForm (editUser) {
+      this.$refs[editUser].validate((valid) => {
+        if (valid) {
+          this.submit()
+        }
+      })
     }
-  },
-  editUserForm (editUser) {
-    this.$refs[editUser].validate((valid) => {
-      if (valid) {
-        this.submit()
-      }
-    })
   }
 }
 </script>
