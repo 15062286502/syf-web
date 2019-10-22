@@ -112,9 +112,9 @@
           </div>
         </el-dialog>
         <el-dialog title="编辑用户" :visible.sync="editFormVisible" width="30%" destroy-on-close="true" @close="closeDialog">
-          <el-form v-loading="loading" :model="editUser" :rules="add_rules" ref="editUser">
+          <el-form v-loading="loading" :model="editUser" :rules="edit_rules" ref="editUser">
             <el-form-item label="用户名" :label-width="formLabelWidth" prop="name">
-              <el-input auto-complete="off" v-model="editUser.name"></el-input>
+              <el-input auto-complete="off" v-model="editUser.name"  :disabled="true"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
               <el-input type="password" v-model="editUser.password"
@@ -182,7 +182,16 @@ export default {
         name: [{validator: user.checkName, trigger: 'blur'}],
         password: [{validator: user.checkPassword, trigger: 'blur'}],
         realName: [{required: true, message: '请输入正确的真实姓名', trigger: 'blur'}],
-        passwordAgain: [{validator: this.checkPasswordAgain, message: '密码不一致', trigger: 'blur'}],
+        passwordAgain: [{validator: this.checkAddPasswordAgain, message: '密码不一致', trigger: 'blur'}],
+        role: [{required: true, message: '请选择角色', trigger: ['blur', 'change']}],
+        address: [{required: true, message: '请输入正确的地址', trigger: 'blur'}],
+        phone: [{validator: user.checkPhone, trigger: 'blur'}]
+      },
+      edit_rules: {
+        name: [{validator: user.checkName, trigger: 'blur'}],
+        password: [{validator: user.checkPassword, trigger: 'blur'}],
+        realName: [{required: true, message: '请输入正确的真实姓名', trigger: 'blur'}],
+        passwordAgain: [{validator: this.checkEditPasswordAgain, message: '密码不一致', trigger: 'blur'}],
         role: [{required: true, message: '请选择角色', trigger: ['blur', 'change']}],
         address: [{required: true, message: '请输入正确的地址', trigger: 'blur'}],
         phone: [{validator: user.checkPhone, trigger: 'blur'}]
@@ -313,12 +322,22 @@ export default {
         }
       })
     },
-    checkPasswordAgain (rule, value, callback) {
-      let first = this.userNew.password
-      let edit = this.editUser.password
-      console.log(edit + '--' + value)
+    checkAddPasswordAgain (rule, value, callback) {
+      let add = this.userNew.password
       if (value) {
-        if (first !== value && edit !== value) {
+        if (add !== value) {
+          return callback(new Error('密码不一致！'))
+        } else {
+          callback()
+        }
+      } else {
+        return callback(new Error('密码不能为空'))
+      }
+    },
+    checkEditPasswordAgain (rule, value, callback) {
+      let edit = this.editUser.password
+      if (value) {
+        if (edit !== value) {
           return callback(new Error('密码不一致！'))
         } else {
           callback()
@@ -328,7 +347,10 @@ export default {
       }
     },
     closeDialog () {
-      this.editUser.password = null
+      this.getTable({
+        'pageInfo': this.pageInfo,
+        'loginName': this.loginName
+      })
     },
     editUserForm (editUser) {
       this.$refs[editUser].validate((valid) => {
@@ -338,26 +360,19 @@ export default {
             method: 'post',
             url: '/home/userEdit',
             data: this.editUser
+          }).then(res => {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+            this.getTable({
+              'pageInfo': this.pageInfo,
+              'loginName': this.loginName
+            })
+          }).catch(res => {
+            alert('服务器错误')
           })
         }
-      }).then(res => {
-        if (res.data === 'success') {
-          this.$message({
-            message: '修改成功',
-            type: 'success'
-          })
-          this.getTable({
-            'pageInfo': this.pageInfo,
-            'loginName': this.loginName
-          })
-        } else {
-          this.$message({
-            message: '修改失败',
-            type: 'error'
-          })
-        }
-      }).catch(res => {
-        alert('服务器错误')
       })
     }
   }
