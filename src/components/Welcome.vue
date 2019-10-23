@@ -20,7 +20,7 @@
           <span>{{role}}</span>
           <span>{{realName}}</span>
           <Dropdown trigger="click" style="margin-right: 50px">
-            <img src="../assets/user.jpg">
+            <img :src = "imgUrl">
           </Dropdown>
         </el-header>
         <el-container>
@@ -50,12 +50,16 @@ export default {
     return {
       realName: store.fetch(),
       menulist: [],
-      role: store.getRole()
+      role: store.getRole(),
+      userName: store.getUserName(),
+      imgUrl: store.getImgUrl()
     }
   },
   created () {
     this.realName = this.$route.params.userInfo.realName
     this.role = this.$route.params.userInfo.role
+    this.userName = this.$route.params.userInfo.name
+    this.imgUrl = this.$route.params.userInfo.image
   },
   mounted () {
     this.$axios({
@@ -81,6 +85,18 @@ export default {
         store.saveRole(val)
       },
       deep: true
+    },
+    userName: {
+      handler: function (val, oldVal) {
+        store.saveUserName(val)
+      },
+      deep: true
+    },
+    imgUrl: {
+      handler: function (val, oldVal) {
+        store.saveImgUrl(val)
+      },
+      deep: true
     }
   },
   methods: {
@@ -88,18 +104,17 @@ export default {
       localStorage.clear()
       this.$router.replace('/')
     },
-    handleAvatarFileSuccess (res, file) {
-      this.$message.success('上传文件成功！')
-    },
     beforeAvatarFileUpload (file) {
       let formData = new FormData()
       formData.append('file', file)
-      formData.append('userName', this.realName)
+      formData.append('userName', this.userName)
       this.$axios({
         method: 'post',
         url: '/home/userImage',
         data: formData
       }).then(res => {
+        this.imgUrl = res.data
+        this.$message.success('上传头像成功！')
       }
       ).catch(res => {
         alert('服务器错误')
