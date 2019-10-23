@@ -5,6 +5,16 @@
             <i class="el-icon-setting" style="margin-right: 15px"></i>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
+              <el-dropdown-item>
+                <el-upload
+                  class="avatar-uploader"
+                  action="#"
+                  :on-success="handleAvatarFileSuccess"
+                  :before-upload="beforeAvatarFileUpload"
+                  limit="1">
+                  <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
           <span>{{role}}</span>
@@ -74,9 +84,26 @@ export default {
     }
   },
   methods: {
-    logout: function () {
+    logout () {
       localStorage.clear()
       this.$router.replace('/')
+    },
+    handleAvatarFileSuccess (res, file) {
+      this.$message.success('上传文件成功！')
+    },
+    beforeAvatarFileUpload (file) {
+      let formData = new FormData()
+      formData.append('file', file)
+      formData.append('userName', this.realName)
+      this.$axios({
+        method: 'post',
+        url: '/home/userImage',
+        data: formData
+      }).then(res => {
+      }
+      ).catch(res => {
+        alert('服务器错误')
+      })
     }
   }
 }
