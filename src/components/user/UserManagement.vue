@@ -76,7 +76,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total=this.total>
         </el-pagination>
-        <UserAdd  :addState="dialogFormVisible" :submit="addUserForm" :user-new="userNew" :add-cancel="addCancel"></UserAdd>
+        <UserAdd  :addState="dialogFormVisible" :submit="addUserForm" :user-new="userNew" :add-cancel="editCancel"></UserAdd>
         <UserEdit :edit-state="editFormVisible" :edit-user="editUser" :submit="editUserForm" :close="closeDialog" :edit-cancel="editCancel"></UserEdit>
       </el-main>
     </el-container>
@@ -251,15 +251,9 @@ export default {
         alert('服务器错误')
       })
     },
-    addCancel () {
-      this.dialogFormVisible = false
-      this.$message({
-        type: 'info',
-        message: '取消操作'
-      })
-    },
     editCancel () {
       this.editFormVisible = false
+      this.dialogFormVisible = false
       this.$message({
         type: 'info',
         message: '取消操作'
