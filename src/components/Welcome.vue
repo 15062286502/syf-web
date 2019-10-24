@@ -9,10 +9,9 @@
                 <el-upload
                   class="avatar-uploader"
                   action="#"
-                  :on-success="handleAvatarFileSuccess"
                   :before-upload="beforeAvatarFileUpload"
                   limit="1">
-                  <el-button size="small" type="primary">点击上传</el-button>
+                  <span>上传新头像</span>
                 </el-upload>
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -105,20 +104,35 @@ export default {
       this.$router.replace('/')
     },
     beforeAvatarFileUpload (file) {
-      let formData = new FormData()
-      formData.append('file', file)
-      formData.append('userName', this.userName)
-      this.$axios({
-        method: 'post',
-        url: '/home/userImage',
-        data: formData
-      }).then(res => {
-        this.imgUrl = res.data
-        this.$message.success('上传头像成功！')
+      let extension = file.name.substring(file.name.lastIndexOf('.') + 1)
+      let size = file.size / 1024 / 1024
+      if (extension === 'jpg' & size < 2) {
+        let formData = new FormData()
+        formData.append('file', file)
+        formData.append('userName', this.userName)
+        this.$axios({
+          method: 'post',
+          url: '/home/userImage',
+          data: formData
+        }).then(res => {
+          this.imgUrl = res.data
+          this.$alert('上传头像成功', '成功', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.$router.go(0)
+            },
+            showClose: false
+          })
+        }
+        ).catch(res => {
+          alert('服务器错误')
+        })
+      } else {
+        this.$message({
+          message: '头像只能是jpg格式且不能大于2M',
+          type: 'warning'
+        })
       }
-      ).catch(res => {
-        alert('服务器错误')
-      })
     }
   }
 }
