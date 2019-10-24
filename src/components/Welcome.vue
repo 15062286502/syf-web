@@ -116,12 +116,11 @@ export default {
           data: formData
         }).then(res => {
           this.imgUrl = res.data
-          this.$alert('上传头像成功', '成功', {
-            confirmButtonText: '确定',
-            callback: action => {
-              this.$router.go(0)
-            },
-            showClose: false
+          this.$notify({
+            title: '成功',
+            message: '上传头像成功',
+            type: 'success',
+            offset: 100
           })
         }
         ).catch(res => {
