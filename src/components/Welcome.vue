@@ -26,7 +26,7 @@
         <el-aside>
           <el-menu active-text-color="#ffd04b" text-color="#fff"  :default-openeds="['1', m.size]" v-for="m in menulist" :key="m" router>
             <el-submenu :index="m.id">
-              <template slot="title"><i class="el-icon-message"></i>{{m.name}}</template>
+              <template slot="title"><i :class="m.icon"></i>{{m.name}}</template>
               <el-menu-item-group v-for="c in m.childMenus" :key="c">
                 <el-menu-item :index="c.url">{{c.name}}</el-menu-item>
               </el-menu-item-group>
