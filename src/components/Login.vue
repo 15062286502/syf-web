@@ -51,7 +51,7 @@ export default {
             url: '/home/login',
             data: this.formLogin
           }).then(res => {
-            if (res.data !== null) {
+            if (typeof res.data !== 'undefined' && res.data !== null && res.data !== '') {
               this.$router.replace({
                 path: '/welcome',
                 name: 'Welcome',

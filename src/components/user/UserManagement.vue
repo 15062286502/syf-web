@@ -226,6 +226,7 @@ export default {
       })
     },
     closeDialog () {
+      this.editFormVisible = false
       this.getTable({
         'pageInfo': this.pageInfo,
         'loginName': this.loginName
