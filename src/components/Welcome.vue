@@ -24,8 +24,8 @@
         </el-header>
         <el-container>
         <el-aside>
-          <el-menu active-text-color="#ffd04b" text-color="#fff"  :default-openeds="['1', m.size]" v-for="m in menulist" :key="m" router>
-            <el-submenu :index="m.id">
+          <el-menu active-text-color="#ffd04b" text-color="#fff"  :default-openeds="['1', m.size]" v-for="m in menulist" :key="m" router @open="openSubmenu(m.url)" @close="openSubmenu(m.url)">
+            <el-submenu :index="m.url" >
               <template slot="title"><i :class="m.icon"></i>{{m.name}}</template>
               <el-menu-item-group v-for="c in m.childMenus" :key="c">
                 <el-menu-item :index="c.url">{{c.name}}</el-menu-item>
@@ -132,6 +132,9 @@ export default {
           type: 'warning'
         })
       }
+    },
+    openSubmenu (index) {
+      this.$router.replace(index)
     }
   }
 }

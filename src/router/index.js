@@ -6,6 +6,7 @@ import Test from '@/components/test/test'
 import Test1 from '@/components/test/test1'
 import User from '@/components/user/UserManagement'
 import Test3 from '@/components/test/test3'
+import Index from '@/components/index/index'
 Vue.use(Router)
 
 export default new Router({
@@ -40,6 +41,11 @@ export default new Router({
           path: '/user',
           name: 'User',
           component: User
+        },
+        {
+          path: '/index',
+          name: 'Index',
+          component: Index
         }
       ]
     },
