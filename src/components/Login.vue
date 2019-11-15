@@ -53,8 +53,8 @@ export default {
           }).then(res => {
             if (typeof res.data !== 'undefined' && res.data !== null && res.data !== '') {
               this.$router.replace({
-                path: '/welcome',
-                name: 'Welcome',
+                path: '/index',
+                name: 'Index',
                 params: {
                   userInfo: res.data
                 }

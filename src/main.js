@@ -7,6 +7,8 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Axios from 'axios'
 import store from '../store'
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts // 将echarts存到Vue原型中
 Vue.config.productionTip = false
 Vue.prototype.$axios = Axios
 Axios.defaults.baseURL = '/api'
