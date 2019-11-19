@@ -11,7 +11,7 @@ import echarts from 'echarts'
 Vue.prototype.$echarts = echarts // 将echarts存到Vue原型中
 Vue.config.productionTip = false
 Vue.prototype.$axios = Axios
-Axios.defaults.baseURL = '/api'
+Axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? '' : '/api'
 Axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.use(ElementUI, { size: 'small', zIndex: 3000 })
 Vue.config.productionTip = false

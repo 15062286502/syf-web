@@ -130,16 +130,8 @@ export default {
     }
   },
   mounted () {
-    let data = this.option.xAxis.data
     this.chartmainline = this.$echarts.init(document.getElementById('chartmainline'))
     this.chartmainline.setOption(this.option)
-    this.chartmainline.on('click', (params) => {
-      this.chartmainline.dispatchAction({
-        type: 'dataZoom',
-        startValue: data[Math.max(params.dataIndex - this.zoomSize / 2, 0)],
-        endValue: data[Math.min(params.dataIndex + this.zoomSize / 2, this.option.data.length - 1)]
-      })
-    })
   },
   created () {
     for (var i = 0; i < this.data.length; i++) {
