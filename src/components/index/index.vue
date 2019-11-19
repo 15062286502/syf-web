@@ -6,9 +6,9 @@
         <el-breadcrumb-item>首页</el-breadcrumb-item>
       </el-breadcrumb>
     </el-header>
-  <el-aside>
+  </el-container>
     <el-row>
-      <el-col>
+      <el-col span="8">
         <el-card :body-style="{ padding: '0px' }">
           <img src="../../assets/ding.jpg" class="image">
           <div style="padding: 14px;">
@@ -18,24 +18,20 @@
             </div>
           </div>
         </el-card>
-      </el-col>
-      <el-col>
-        <el-card :body-style="{ padding: '0px' }">
-          <img src="../../assets/message.jpg" class="image">
-          <div style="padding: 14px;">
-            <span>未读消息</span>
-            <div class="bottom clearfix">
-              <el-button type="text" class="button">点击查看</el-button>
+          <el-card :body-style="{ padding: '0px' }" style="margin-top: 50px">
+            <img src="../../assets/message.jpg" class="image">
+            <div style="padding: 14px;">
+              <span>未读消息</span>
+              <div class="bottom clearfix">
+                <el-button type="text" class="button">点击查看</el-button>
+              </div>
             </div>
-          </div>
-        </el-card>
+          </el-card>
+      </el-col>
+      <el-col span="16">
+          <div id="chartmainline" style="width:800px; height:600px;"></div>
       </el-col>
     </el-row>
-  </el-aside>
-    <el-main>
-      <div id="chartmainline" style="width:600px; height:400px;"></div>
-    </el-main>
-  </el-container>
 
 </div>
 </template>
@@ -51,8 +47,8 @@ export default {
       zoomSize: 6,
       option: {
         title: {
-          text: '特性示例：渐变色 阴影 点击缩放',
-          subtext: 'Feature Sample: Gradient Color, Shadow, Click Zoom'
+          text: '近期订单完成量',
+          subtext: '如下所示'
         },
         xAxis: {
           data: ['点', '击', '柱', '子', '或', '者', '两', '指', '在', '触', '屏', '上', '滑', '动', '能', '够', '自', '动', '缩', '放'],
