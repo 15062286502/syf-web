@@ -23,6 +23,7 @@
 <script>
 import user from './user/user'
 import Slider from './tool/Slider'
+import store from '../../store'
 export default {
   name: 'HelloWorld',
   components: {
@@ -51,12 +52,13 @@ export default {
             url: '/home/login',
             data: this.formLogin
           }).then(res => {
-            if (typeof res.data !== 'undefined' && res.data !== null && res.data !== '') {
+            if (typeof res.data !== 'undefined' && res.data.isLogin === 'true') {
+              store.saveToken(res.data.token)
               this.$router.replace({
                 path: '/index',
                 name: 'Index',
                 params: {
-                  userInfo: res.data
+                  userInfo: res.data.returnObj
                 }
               }
               )

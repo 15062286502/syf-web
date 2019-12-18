@@ -2,6 +2,7 @@ const STORAGE_KEY = 'todos-vuejs'
 const ROLEINFO = 'roleinfo'
 const USERNAME = 'username'
 const IMGURL = 'imgurl'
+const TOKEN = 'token'
 export default {
   fetch: function() {
     return window.JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '[]')
@@ -26,6 +27,11 @@ export default {
   },
   saveImgUrl: function (imgUrl) {
     window.localStorage.setItem(IMGURL, window.JSON.stringify(imgUrl))
+  },
+  getToken: function () {
+    return window.JSON.parse(window.localStorage.getItem(TOKEN) || '[]')
+  },
+  saveToken: function (token) {
+    window.localStorage.setItem(TOKEN, window.JSON.stringify(token))
   }
-
 }
