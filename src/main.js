@@ -15,7 +15,24 @@ Axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? '' : '/api'
 Axios.defaults.headers.post['Content-Type'] = 'application/json'
 Vue.use(ElementUI, { size: 'small', zIndex: 3000 })
 Vue.config.productionTip = false
-
+Axios.interceptors.request.use(
+  config => {
+    if (store.getToken()) { // 判断是否存在token，如果存在的话，则每个http header都加上token
+      config.headers.Authorization = `${store.getToken()}`
+    }
+    return config
+  },
+  err => {
+    return Promise.reject(err)
+  })
+Axios.interceptors.response.use(
+  response => {
+    console.log(response)
+    return response
+  },
+  err => {
+    return Promise.reject(err.response)
+  })
 router.beforeEach((to, from, next) => {
   let isLogin = store.fetch()
   if (to.path === '/login') {
