@@ -69,7 +69,6 @@ export default {
       this.menulist = res.data
     }
     ).catch(res => {
-      alert('服务器错误')
     })
   },
   watch: {
@@ -124,7 +123,6 @@ export default {
           })
         }
         ).catch(res => {
-          alert('服务器错误')
         })
       } else {
         this.$message({

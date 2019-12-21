@@ -27,10 +27,13 @@ Axios.interceptors.request.use(
   })
 Axios.interceptors.response.use(
   response => {
-    console.log(response)
     return response
   },
   err => {
+    if (err.response.data.code === '50000') {
+      localStorage.clear()
+      router.replace('/')
+    }
     return Promise.reject(err.response)
   })
 router.beforeEach((to, from, next) => {
