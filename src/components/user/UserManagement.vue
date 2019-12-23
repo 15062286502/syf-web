@@ -147,7 +147,6 @@ export default {
           })
         }
         ).catch(res => {
-          alert('服务器错误')
         })
       }).catch(() => {
         this.$message({
@@ -170,7 +169,6 @@ export default {
         this.total = res.data.total
       }
       ).catch(res => {
-        alert('服务器错误')
       })
     },
     pageSearch (e) {
@@ -222,7 +220,6 @@ export default {
         }
       }
       ).catch(res => {
-        alert('服务器错误')
       })
     },
     closeDialog () {
@@ -248,7 +245,6 @@ export default {
           'loginName': this.loginName
         })
       }).catch(res => {
-        alert('服务器错误')
       })
     },
     editCancel () {

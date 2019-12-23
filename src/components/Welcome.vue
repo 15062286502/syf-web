@@ -1,7 +1,7 @@
 <template>
       <el-container style="height: 700px">
         <el-header>
-          <el-dropdown>
+          <el-dropdown trigger="click">
             <i class="el-icon-setting" style="margin-right: 15px"></i>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>

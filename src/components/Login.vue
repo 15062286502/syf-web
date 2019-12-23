@@ -67,7 +67,6 @@ export default {
             }
           })
             .catch(res => {
-              alert('服务器错误')
             })
         }
       })
