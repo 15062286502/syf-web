@@ -2,7 +2,7 @@
       <el-container style="height: 700px">
         <el-header>
           <el-dropdown trigger="click">
-            <i class="el-icon-setting" style="margin-right: 15px"></i>
+            <i class="el-icon-setting" style="margin-right: 15px;color: white"></i>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
               <el-dropdown-item>
@@ -140,15 +140,15 @@ export default {
 
 <style scoped>
   .el-header {
-    background: #e9eaec;
-    color: #333;
+    background-color: #242f42;
+    color: white;
     line-height: 60px;
     text-align: right;
     font-size: 12px
   }
 
   .el-aside {
-    background: #464c5b;
+    background:  #324157;
   }
   .el-main {
     color: #333;
@@ -159,10 +159,12 @@ export default {
     text-align: center;
   }
   .el-menu{
-    background: #464c5b;
+    background-color: #324157;
+    text-color: #bfcbd9;
+    active-text-color: #20a0ff;
   }
   .el-menu-item-group{
-    background: #464c5b;
+    background: #324157;
   }
   img{
     width: 40px;
