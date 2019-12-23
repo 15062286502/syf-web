@@ -27,13 +27,17 @@ Axios.interceptors.request.use(
   })
 Axios.interceptors.response.use(
   response => {
-    return response
-  },
-  err => {
-    if (err.response.data.code === '50000') {
+    if (response.data.code === '50000') {
       localStorage.clear()
       router.replace('/')
     }
+    return response
+  },
+  err => {
+    Vue.prototype.$message({
+      type: 'error',
+      message: '连接服务器异常'
+    })
     return Promise.reject(err.response)
   })
 router.beforeEach((to, from, next) => {
