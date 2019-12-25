@@ -12,7 +12,7 @@
           </div>
           <div class="user-info-list">
             上次登录时间：
-            <span>2019-11-01</span>
+            <span>{{lastLoginTime}}</span>
           </div>
           <div class="user-info-list">
             上次登录地点：
@@ -113,14 +113,16 @@
 import Schart from 'vue-schart'
 import store from '../../../store'
 export default {
-  name: 'dashboard',
+  name: 'index',
   created () {
     this.realName = this.$route.params.userInfo.realName
     this.userRole = this.$route.params.userInfo.role
     this.imgUrl = this.$route.params.userInfo.image
+    this.lastLoginTime = this.$route.params.lastLoginTime
   },
   data () {
     return {
+      lastLoginTime: store.getLastLoginTime(),
       userRole: store.getRole(),
       realName: store.fetch(),
       imgUrl: store.getImgUrl(),

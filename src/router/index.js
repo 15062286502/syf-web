@@ -7,6 +7,7 @@ import Test1 from '@/components/test/test1'
 import User from '@/components/user/UserManagement'
 import Test3 from '@/components/test/test3'
 import Index from '@/components/index/index'
+import foodManagnement from '@/components/foods/foodManagement'
 Vue.use(Router)
 
 export default new Router({
@@ -46,6 +47,11 @@ export default new Router({
           path: '/index',
           name: 'Index',
           component: Index
+        },
+        {
+          path: '/foods',
+          name: 'Foods',
+          component: foodManagnement
         }
       ]
     },

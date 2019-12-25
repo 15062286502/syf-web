@@ -54,11 +54,13 @@ export default {
           }).then(res => {
             if (typeof res.data !== 'undefined' && res.data.isLogin === 'true') {
               store.saveToken(res.data.token)
+              store.saveLastLoginTime(res.data.tokenCreatedTime)
               this.$router.replace({
                 path: '/index',
                 name: 'Index',
                 params: {
-                  userInfo: res.data.returnObj
+                  userInfo: res.data.returnObj,
+                  lastLoginTime: res.data.tokenCreatedTime
                 }
               }
               )

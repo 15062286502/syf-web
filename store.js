@@ -3,6 +3,7 @@ const ROLEINFO = 'roleinfo'
 const USERNAME = 'username'
 const IMGURL = 'imgurl'
 const TOKEN = 'token'
+const LASTLOGINTIME = 'lastLoginTime'
 export default {
   fetch: function() {
     return window.JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '[]')
@@ -33,5 +34,11 @@ export default {
   },
   saveToken: function (token) {
     window.localStorage.setItem(TOKEN, window.JSON.stringify(token))
+  },
+  getLastLoginTime: function () {
+    return window.JSON.parse(window.localStorage.getItem(LASTLOGINTIME) || '[]')
+  },
+  saveLastLoginTime: function (time) {
+    window.localStorage.setItem(LASTLOGINTIME, window.JSON.stringify(time))
   }
 }
