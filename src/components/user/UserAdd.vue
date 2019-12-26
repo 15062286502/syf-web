@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增用户" :visible.sync="addState" width="30%" destroy-on-close="true">
+  <el-dialog title="新增用户" :visible.sync="addState" width="30%" destroy-on-close="true" @close="close">
     <el-form v-loading="loading" :model="userNew" :rules="add_rules" ref="addUser">
       <el-form-item label="用户名" :label-width="formLabelWidth" prop="name">
         <el-input auto-complete="off" v-model="userNew.name"></el-input>
@@ -51,6 +51,9 @@ export default {
       type: Boolean
     },
     addCancel: {
+      type: Function
+    },
+    close: {
       type: Function
     }
   },

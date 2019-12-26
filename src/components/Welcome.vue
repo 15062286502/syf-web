@@ -129,6 +129,7 @@ export default {
           message: '头像只能是jpg格式且不能大于2M',
           type: 'warning'
         })
+        return false
       }
     },
     openSubmenu (index) {

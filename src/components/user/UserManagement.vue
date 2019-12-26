@@ -76,7 +76,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total=this.total>
         </el-pagination>
-        <UserAdd  :addState="dialogFormVisible" :submit="addUserForm" :user-new="userNew" :add-cancel="editCancel"></UserAdd>
+        <UserAdd  :addState="dialogFormVisible" :submit="addUserForm" :user-new="userNew" :add-cancel="editCancel" :close="closeDialog"></UserAdd>
         <UserEdit :edit-state="editFormVisible" :edit-user="editUser" :submit="editUserForm" :close="closeDialog" :edit-cancel="editCancel"></UserEdit>
       </el-main>
     </el-container>
@@ -85,8 +85,8 @@
 </template>
 
 <script>
-import UserAdd from '../user/UserAdd'
-import UserEdit from '../user/UserEdit'
+import UserAdd from './UserAdd'
+import UserEdit from './UserEdit'
 export default {
   name: 'UserManagement',
   components: {UserEdit, UserAdd},
@@ -224,6 +224,7 @@ export default {
     },
     closeDialog () {
       this.editFormVisible = false
+      this.dialogFormVisible = false
       this.getTable({
         'pageInfo': this.pageInfo,
         'loginName': this.loginName
