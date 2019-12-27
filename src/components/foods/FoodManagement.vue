@@ -112,13 +112,7 @@ export default {
       },
       dialogFormVisible: false,
       /* 用于添加的user实体 */
-      userNew: {
-        name: '',
-        price: '',
-        kind: '',
-        goodDesc: '',
-        imgUrl: ''
-      },
+      userNew: [],
       total: 0,
       editFormVisible: false,
       editUser: [],
