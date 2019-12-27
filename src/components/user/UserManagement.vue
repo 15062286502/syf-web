@@ -21,7 +21,7 @@
         </div>
         </div>
         <div id="add_user">
-          <el-button type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增用户</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="open ()">新增用户</el-button>
         </div>
         <el-table
           :data="tableData"
@@ -255,6 +255,10 @@ export default {
         type: 'info',
         message: '取消操作'
       })
+    },
+    open () {
+      this.dialogFormVisible = true
+      this.userNew = {}
     }
   }
 }
