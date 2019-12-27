@@ -91,7 +91,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total=this.total>
         </el-pagination>
-        <FoodAdd  :addState="dialogFormVisible" :submit="addUserForm" :user-new="userNew" :add-cancel="editCancel"  :close="closeDialog"></FoodAdd>
+        <FoodAdd  :addState="dialogFormVisible" :submit="addUserForm" :user-new="userNew" :add-cancel="editCancel"  :close="closeDialog" @getImgUrl="getImg"></FoodAdd>
       </el-main>
     </el-container>
   </div>
@@ -113,14 +113,11 @@ export default {
       dialogFormVisible: false,
       /* 用于添加的user实体 */
       userNew: {
-        id: null,
-        name: null,
-        password: null,
-        passwordAgain: null,
-        realName: null,
-        role: null,
-        address: null,
-        phone: null
+        name: '',
+        price: '',
+        kind: '',
+        goodDesc: '',
+        imgUrl: ''
       },
       total: 0,
       editFormVisible: false,
@@ -183,7 +180,7 @@ export default {
       if (this.multipleSelection.length === 0) {
         this.$message({
           message: '请至少选择一项后进行操作',
-          type: 'warn'
+          type: 'warning'
         })
       } else {
         this.$confirm('此操作将永久删除, 是否继续?', '提示', {
@@ -230,6 +227,7 @@ export default {
     closeDialog () {
       this.editFormVisible = false
       this.dialogFormVisible = false
+      this.userNew = []
       this.getTable({
         'pageInfo': this.pageInfo,
         'loginName': this.loginName
@@ -238,6 +236,7 @@ export default {
     editCancel () {
       this.editFormVisible = false
       this.dialogFormVisible = false
+      this.userNew = []
       this.$message({
         type: 'info',
         message: '取消操作'
@@ -268,6 +267,9 @@ export default {
       }
       ).catch(res => {
       })
+    },
+    getImg (val) {
+      this.userNew.imgUrl = val
     }
   }
 }

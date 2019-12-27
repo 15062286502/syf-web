@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增商品" :visible.sync="addState" width="30%" destroy-on-close="true" @close="close">
+  <el-dialog title="新增商品" :visible.sync="addState" width="30%" destroy-on-close="true" @close="closeGood">
     <el-form v-loading="loading" :model="userNew" :rules="add_rules" ref="addUser">
       <el-form-item label="商品名称" :label-width="formLabelWidth" prop="name">
         <el-input auto-complete="off" v-model="userNew.name"></el-input>
@@ -8,8 +8,8 @@
         <el-input  v-model="userNew.price"
                   auto-complete="off" placeholder="商品价格"></el-input>
       </el-form-item>
-      <el-form-item label="商品类型" prop="type" :label-width="formLabelWidth">
-        <el-input  v-model="userNew.type"
+      <el-form-item label="商品类型" prop="kind" :label-width="formLabelWidth">
+        <el-input  v-model="userNew.kind"
                   auto-complete="off" placeholder="商品类型"></el-input>
       </el-form-item>
       <el-form-item label="商品图片" :label-width="formLabelWidth" prop="imgUrl">
@@ -17,6 +17,7 @@
           <el-upload
             :class="{hide:hideUpload}"
             action="/api/good/uploadGoodImg"
+            :data="{'name':userNew.name}"
             list-type="picture-card"
             :file-list="fileList"
             limit="1"
@@ -33,7 +34,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="addCancel">取 消</el-button>
+      <el-button @click="addCancelGood">取 消</el-button>
       <el-button type="primary" @click="addUserForm('addUser')">确 定</el-button>
     </div>
   </el-dialog>
@@ -64,7 +65,7 @@ export default {
       add_rules: {
         name: [{required: true, message: '请输入商品名', trigger: 'blur'}],
         price: [{required: true, message: '请输入价格', trigger: 'blur'}],
-        type: [{required: true, message: '请输入类型', trigger: 'blur'}]
+        kind: [{required: true, message: '请输入类型', trigger: 'blur'}]
       },
       formLabelWidth: '80px',
       hideUpload: false,
@@ -77,6 +78,8 @@ export default {
       this.$refs[addUser].validate((valid) => {
         if (valid) {
           this.submit()
+          this.userNew = []
+          this.clearUpload()
         }
       })
     },
@@ -106,7 +109,20 @@ export default {
       }
     },
     handleAvatarSuccess (res, file) {
-      console.log(res.data)
+      this.imgUrl = res
+      this.$emit('getImgUrl', this.imgUrl)
+    },
+    addCancelGood () {
+      this.clearUpload()
+      this.addCancel()
+    },
+    closeGood () {
+      this.clearUpload()
+      this.close()
+    },
+    clearUpload () {
+      this.fileList = []
+      this.hideUpload = false
     }
   }
 }

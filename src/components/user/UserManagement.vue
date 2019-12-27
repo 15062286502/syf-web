@@ -221,10 +221,12 @@ export default {
       }
       ).catch(res => {
       })
+      this.userNew = []
     },
     closeDialog () {
       this.editFormVisible = false
       this.dialogFormVisible = false
+      this.userNew = []
       this.getTable({
         'pageInfo': this.pageInfo,
         'loginName': this.loginName
@@ -251,6 +253,7 @@ export default {
     editCancel () {
       this.editFormVisible = false
       this.dialogFormVisible = false
+      this.userNew = []
       this.$message({
         type: 'info',
         message: '取消操作'
