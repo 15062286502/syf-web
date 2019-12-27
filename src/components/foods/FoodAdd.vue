@@ -78,7 +78,6 @@ export default {
       this.$refs[addUser].validate((valid) => {
         if (valid) {
           this.submit()
-          this.userNew = []
           this.clearUpload()
         }
       })

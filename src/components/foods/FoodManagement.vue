@@ -21,7 +21,7 @@
           </div>
         </div>
         <div id="add_user">
-          <el-button type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增商品</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="open()">新增商品</el-button>
           <el-button type="danger" @click="handleDelete()">删除
           </el-button>
         </div>
@@ -268,6 +268,10 @@ export default {
     },
     getImg (val) {
       this.userNew.imgUrl = val
+    },
+    open () {
+      this.dialogFormVisible = true
+      this.userNew = {}
     }
   }
 }
