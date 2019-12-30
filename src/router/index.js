@@ -8,6 +8,7 @@ import User from '@/components/user/UserManagement'
 import Test3 from '@/components/test/test3'
 import Index from '@/components/index/index'
 import foodManagnement from '@/components/foods/FoodManagement'
+import takeIn from '@/components/takeInOrder/takeInManagement'
 Vue.use(Router)
 
 export default new Router({
@@ -52,6 +53,11 @@ export default new Router({
           path: '/foods',
           name: 'Foods',
           component: foodManagnement
+        },
+        {
+          path: '/takeIn',
+          name: 'TakeIn',
+          component: takeIn
         }
       ]
     },
