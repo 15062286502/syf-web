@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增商品" :visible.sync="addState" width="30%" destroy-on-close="true" @close="closeGood">
+  <el-dialog :title="userNew.id==null?'新增商品':'编辑商品'" :visible.sync="addState" width="30%" destroy-on-close="true" @close="closeGood">
     <el-form v-loading="loading" :model="userNew" :rules="add_rules" ref="addUser">
       <el-form-item label="商品名称" :label-width="formLabelWidth" prop="name">
         <el-input auto-complete="off" v-model="userNew.name"></el-input>

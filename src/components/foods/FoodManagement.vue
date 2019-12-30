@@ -248,17 +248,24 @@ export default {
         data: this.userNew
       }).then(res => {
         if (res.data.isLogin === 'true') {
-          this.$message({
-            message: '添加成功',
-            type: 'success'
-          })
+          if (res.data.returnObj === 'add') {
+            this.$message({
+              message: '添加成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+          }
           this.getTable({
             'pageInfo': this.pageInfo,
             'loginName': this.loginName
           })
         } else {
           this.$message({
-            message: '该商品已存在',
+            message: res.data.returnObj,
             type: 'error'
           })
         }
@@ -272,6 +279,10 @@ export default {
     open () {
       this.dialogFormVisible = true
       this.userNew = {}
+    },
+    handleEdit (index, row) {
+      this.dialogFormVisible = true
+      this.userNew = row
     }
   }
 }
