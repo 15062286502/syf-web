@@ -39,7 +39,7 @@
           <el-table-column type="expand"  fixed >
             <template slot-scope="scope" >
               <div class="card">
-                <div v-for="c in (JSON.parse(scope.row.takeIn.orderDesc))" :key="c">
+                <div v-for="c in (JSON.parse(scope.row.orderDesc))" :key="c">
               <el-card  inline style="margin-right: 23px;margin-bottom: 5px;background-color: aquamarine">
                   <div>商品名:{{c.name}}</div>
                 <div>商品价格:{{c.price}}</div>
@@ -51,52 +51,52 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="takeIn.identifier"
+            prop="identifier"
             label="订单号"
             fixed
           >
           </el-table-column>
           <el-table-column
-            prop="takeIn.mealNumber"
+            prop="mealNumber"
             label="取餐号"
             width="80"
             fixed
           >
           </el-table-column>
           <el-table-column
-            prop="takeIn.cupNumber"
+            prop="cupNumber"
             label="商品数量"
             width="80"
             fixed
           >
           </el-table-column>
           <el-table-column
-            prop="takeIn.sumMoney"
+            prop="sumMoney"
             label="总价"
             width="80"
             fixed
           >
           </el-table-column>
           <el-table-column
-            prop="takeIn.remarks"
+            prop="remarks"
             label="备注"
             fixed
           >
           </el-table-column>
           <el-table-column
-            prop="time"
+            prop="createTime"
             label="创建时间"
             fixed
           >
           </el-table-column>
           <el-table-column
-            prop="takeIn.state"
+            prop="state"
             label="状态"
             width="90"
             fixed
           >
             <template   slot-scope="scope">
-              <el-tag :type="scope.row.takeIn.state=='0'?'danger':'success'" :underline="false">{{scope.row.takeIn.state==='0'?'制餐中':'已完成'}}</el-tag>
+              <el-tag :type="scope.row.state=='0'?'danger':'success'" :underline="false">{{scope.row.state==='0'?'制餐中':'已完成'}}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="操作"   width="220">
