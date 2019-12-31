@@ -4,7 +4,7 @@
       <el-header style="text-align: left;background-color: slategrey">
         <el-breadcrumb separator="/" style="margin-top: 25px">
           <el-breadcrumb-item>菜单设置</el-breadcrumb-item>
-          <el-breadcrumb-item>店内订单</el-breadcrumb-item>
+          <el-breadcrumb-item>外卖订单</el-breadcrumb-item>
         </el-breadcrumb>
       </el-header>
       <el-main>
@@ -39,26 +39,43 @@
           <el-table-column type="expand"  fixed >
             <template slot-scope="scope" >
               <div class="card">
+                <el-card  inline style="margin-right: 23px;margin-bottom: 5px;background-color: blanchedalmond;">
+                  <div>门牌号:{{JSON.parse(scope.row.address).detail}}</div>
+                  <div>姓名:{{JSON.parse(scope.row.address).person}}</div>
+                  <div>性别:{{JSON.parse(scope.row.address).sex}}</div>
+                  <div>联系方式:{{JSON.parse(scope.row.address).phone}}</div>
+                </el-card>
+                <el-card  inline style="margin-right: 23px;margin-bottom: 5px;background-color: gainsboro;">
+                  <div>骑手评分:{{personScore(JSON.parse(scope.row.evaluate).emojiNum)}}</div>
+                  <div>店铺评分:<el-rate
+                    :value="parseInt(JSON.parse(scope.row.evaluate).startNum) + 1"
+                    disabled
+                    show-score
+                    text-color="#ff9900">
+                  </el-rate></div>
+                  <div>文字评价:{{JSON.parse(scope.row.evaluate).writtenWords}}</div>
+                </el-card>
                 <div v-for="c in (JSON.parse(scope.row.orderDesc))" :key="c">
-              <el-card  inline style="margin-right: 23px;margin-bottom: 5px;background-color: aquamarine">
-                  <div>商品名:{{c.name}}</div>
-                <div>商品价格:{{c.price}}</div>
-                <div>商品数量:{{c.number}}</div>
-                <div>规格:{{c.detail}}</div>
-              </el-card>
-              </div>
+                  <el-card  inline style="margin-right: 23px;margin-bottom: 5px;background-color: aquamarine">
+                    <div>商品名:{{c.name}}</div>
+                    <div>商品价格:{{c.price}}</div>
+                    <div>商品数量:{{c.number}}</div>
+                    <div>规格:{{c.detail}}</div>
+                  </el-card>
+                </div>
               </div>
             </template>
           </el-table-column>
           <el-table-column
             prop="identifier"
             label="订单号"
+            width="150"
             fixed
           >
           </el-table-column>
           <el-table-column
-            prop="mealNumber"
-            label="取餐号"
+            prop="deliveryPerson"
+            label="骑手"
             width="80"
             fixed
           >
@@ -87,20 +104,21 @@
           <el-table-column
             prop="createTime"
             label="创建时间"
+            width="140"
             fixed
           >
           </el-table-column>
           <el-table-column
             prop="state"
             label="状态"
-            width="90"
+            width="80"
             fixed
           >
             <template   slot-scope="scope">
               <el-tag :type="scope.row.state=='0'?'danger':'success'" :underline="false">{{scope.row.state==='0'?'制餐中':'已完成'}}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="操作"   width="150">
+          <el-table-column label="操作"   width="240">
             <template slot-scope="scope">
               <el-button
                 type="success"
@@ -109,6 +127,10 @@
               <el-button
                 type="danger"
                 @click="eachDelete(scope.$index, scope.row)">删除
+              </el-button>
+              <el-button
+                type="primary"
+                @click="givePerson(scope.$index, scope.row)">分配骑手
               </el-button>
             </template>
           </el-table-column>
@@ -129,7 +151,7 @@
 
 <script>
 export default {
-  name: 'takeInManagement',
+  name: 'takeOutManagement',
   data () {
     return {
       tableData: [],
@@ -138,13 +160,12 @@ export default {
         page: 0,
         pageSize: 5
       },
-      dialogFormVisible: false,
       /* 用于添加的user实体 */
       userNew: [],
       total: 0,
-      editFormVisible: false,
       editUser: [],
-      multipleSelection: []
+      multipleSelection: [],
+      star: 0
     }
   },
   created () {
@@ -157,7 +178,7 @@ export default {
     getTable (e) {
       this.$axios({
         method: 'get',
-        url: '/takeIn/getAllTakeInOrder',
+        url: '/takeOut/getAllTakeOutOrder',
         params: {
           'page': e.pageInfo.page,
           'pageSize': e.pageInfo.pageSize,
@@ -212,7 +233,7 @@ export default {
         }).then(() => {
           this.$axios({
             method: 'post',
-            url: '/takeIn/takeInDelete',
+            url: '/takeOut/takeOutDelete',
             data: this.multipleSelection
           }).then(res => {
             if (res.data.isLogin === 'true') {
@@ -261,7 +282,7 @@ export default {
         }).then(() => {
           this.$axios({
             method: 'post',
-            url: '/takeIn/takeInComplete',
+            url: '/takeOut/takeOutComplete',
             data: this.multipleSelection
           }).then(res => {
             if (res.data.isLogin === 'true') {
@@ -295,6 +316,18 @@ export default {
       this.$refs.multipleTable.clearSelection()
       this.$refs.multipleTable.toggleRowSelection(row, true)
       this.open()
+    },
+    personScore (e) {
+      let emoji
+      switch (e) {
+        case '0':emoji = '非常差'
+          break
+        case '1':emoji = '一般'
+          break
+        case '2':emoji = '非常好'
+          break
+      }
+      return emoji
     }
   }
 }

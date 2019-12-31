@@ -9,6 +9,7 @@ import Test3 from '@/components/test/test3'
 import Index from '@/components/index/index'
 import foodManagnement from '@/components/foods/FoodManagement'
 import takeIn from '@/components/takeInOrder/takeInManagement'
+import takeOut from '@/components/takeOutOrder/takeOutManagement'
 Vue.use(Router)
 
 export default new Router({
@@ -58,6 +59,11 @@ export default new Router({
           path: '/takeIn',
           name: 'TakeIn',
           component: takeIn
+        },
+        {
+          path: '/takeOut',
+          name: 'TakeOut',
+          component: takeOut
         }
       ]
     },
