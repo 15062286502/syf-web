@@ -73,6 +73,7 @@
           <el-table-column label="操作"   width="150">
             <template slot-scope="scope">
               <el-button
+                type="success"
                 @click="handleEdit(scope.$index, scope.row)">编辑
               </el-button>
               <el-button
@@ -215,7 +216,8 @@ export default {
       }
     },
     eachDelete (index, row) {
-      this.$refs.multipleTable.toggleRowSelection(row)
+      this.$refs.multipleTable.clearSelection()
+      this.$refs.multipleTable.toggleRowSelection(row, true)
       this.handleDelete()
     },
     closeDialog () {

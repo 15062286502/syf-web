@@ -21,7 +21,7 @@
           </div>
         </div>
         <div id="add_user">
-          <el-button type="primary" icon="el-icon-plus" @click="open()">新增商品</el-button>
+          <el-button type="primary"  @click="open()">批量完成</el-button>
           <el-button type="danger" @click="handleDelete()">删除
           </el-button>
         </div>
@@ -38,16 +38,15 @@
           </el-table-column>
           <el-table-column type="expand"  fixed >
             <template slot-scope="scope" >
-              <div style="display: flex; flex-direction: row">
-              <el-card  inline class="demo-table-expand" v-for="c in (JSON.parse(scope.row.takeIn.orderDesc))" :key="c" >
-                <div slot="header" class="clearfix">
-                  <span>商品详情</span>
-                </div>
+              <div class="card">
+                <div v-for="c in (JSON.parse(scope.row.takeIn.orderDesc))" :key="c">
+              <el-card  inline style="margin-right: 23px;margin-bottom: 5px;background-color: aquamarine">
                   <div>商品名:{{c.name}}</div>
                 <div>商品价格:{{c.price}}</div>
                 <div>商品数量:{{c.number}}</div>
                 <div>规格:{{c.detail}}</div>
               </el-card>
+              </div>
               </div>
             </template>
           </el-table-column>
@@ -60,19 +59,21 @@
           <el-table-column
             prop="takeIn.mealNumber"
             label="取餐号"
+            width="80"
             fixed
           >
           </el-table-column>
           <el-table-column
             prop="takeIn.cupNumber"
             label="商品数量"
+            width="80"
             fixed
           >
           </el-table-column>
           <el-table-column
             prop="takeIn.sumMoney"
             label="总价"
-            width="90"
+            width="80"
             fixed
           >
           </el-table-column>
@@ -98,14 +99,19 @@
               <el-tag :type="scope.row.takeIn.state=='0'?'danger':'success'" :underline="false">{{scope.row.takeIn.state==='0'?'制餐中':'已完成'}}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="操作"   width="150">
+          <el-table-column label="操作"   width="220">
             <template slot-scope="scope">
               <el-button
+                type="success"
                 @click="handleEdit(scope.$index, scope.row)">编辑
               </el-button>
               <el-button
                 type="danger"
                 @click="eachDelete(scope.$index, scope.row)">删除
+              </el-button>
+              <el-button
+                type="primary"
+                @click="handleComplete(scope.$index, scope.row)">完成
               </el-button>
             </template>
           </el-table-column>
@@ -198,6 +204,7 @@ export default {
       this.multipleSelection = val
     },
     handleDelete () {
+      console.log(this.multipleSelection)
       if (this.multipleSelection.length === 0) {
         this.$message({
           message: '请至少选择一项后进行操作',
@@ -211,7 +218,7 @@ export default {
         }).then(() => {
           this.$axios({
             method: 'post',
-            url: '/good/goodsDelete',
+            url: '/takeIn/takeInDelete',
             data: this.multipleSelection
           }).then(res => {
             if (res.data.isLogin === 'true') {
@@ -242,7 +249,8 @@ export default {
       }
     },
     eachDelete (index, row) {
-      this.$refs.multipleTable.toggleRowSelection(row)
+      this.$refs.multipleTable.clearSelection()
+      this.$refs.multipleTable.toggleRowSelection(row, true)
       this.handleDelete()
     },
     closeDialog () {
@@ -318,5 +326,10 @@ export default {
   }
   #add_user{
     margin-bottom: 9px;
+  }
+  .card{
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
   }
 </style>
