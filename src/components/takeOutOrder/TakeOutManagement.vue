@@ -46,14 +46,14 @@
                   <div>联系方式:{{JSON.parse(scope.row.address).phone}}</div>
                 </el-card>
                 <el-card  inline style="margin-right: 23px;margin-bottom: 5px;background-color: gainsboro;">
-                  <div>骑手评分:{{personScore(JSON.parse(scope.row.evaluate).emojiNum)}}</div>
+                  <div>骑手评分:{{personScore(scope.row.evaluate==null?"":JSON.parse(scope.row.evaluate).emojiNum)}}</div>
                   <div>店铺评分:<el-rate
-                    :value="parseInt(JSON.parse(scope.row.evaluate).startNum) + 1"
+                    :value="scope.row.evaluate==null?0:parseInt(JSON.parse(scope.row.evaluate).startNum) + 1"
                     disabled
                     show-score
                     text-color="#ff9900">
                   </el-rate></div>
-                  <div>文字评价:{{JSON.parse(scope.row.evaluate).writtenWords}}</div>
+                  <div>文字评价:{{scope.row.evaluate==null?"":JSON.parse(scope.row.evaluate).writtenWords}}</div>
                 </el-card>
                 <div v-for="c in (JSON.parse(scope.row.orderDesc))" :key="c">
                   <el-card  inline style="margin-right: 23px;margin-bottom: 5px;background-color: aquamarine">
@@ -144,6 +144,33 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total=this.total>
         </el-pagination>
+        <el-dialog title="订单指派" :visible.sync="state" width="30%" destroy-on-close="true" @close="clearUpload">
+          <el-form v-loading="loading" :model="personForm" ref="personForm">
+            <el-form-item label="选择骑手">
+              <el-select v-model="personForm.region" placeholder="请选择骑手" @visible-change="e=>{getData(e)}">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="配送时间">
+              <el-col :span="8">
+                <el-date-picker type="date" placeholder="选择日期" v-model="personForm.date1" style="width: 100%;"></el-date-picker>
+              </el-col>
+              <el-col class="line" :span="2">-</el-col>
+              <el-col :span="8">
+                <el-time-picker placeholder="选择时间" v-model="personForm.date2" style="width: 100%;"></el-time-picker>
+              </el-col>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="clearUpload">取 消</el-button>
+            <el-button type="primary" @click="submit('personForm')">确 定</el-button>
+          </div>
+        </el-dialog>
       </el-main>
     </el-container>
   </div>
@@ -165,7 +192,10 @@ export default {
       total: 0,
       editUser: [],
       multipleSelection: [],
-      star: 0
+      star: 0,
+      state: false,
+      personForm: {region: '', outId: ''},
+      options: []
     }
   },
   created () {
@@ -318,16 +348,64 @@ export default {
       this.open()
     },
     personScore (e) {
-      let emoji
+      let emoji = ''
       switch (e) {
-        case '0':emoji = '非常差'
+        case '0':emoji = '超赞'
           break
         case '1':emoji = '一般'
           break
-        case '2':emoji = '非常好'
+        case '2':emoji = '非常差'
           break
       }
       return emoji
+    },
+    givePerson (index, row) {
+      this.state = true
+      this.personForm.outId = row.id
+    },
+    getData (e) {
+      if (e === true) {
+        this.$axios({
+          method: 'post',
+          url: '/takeOut/getAllDelivery'
+        }).then(res => {
+          if (res.data.isLogin === 'true') {
+            this.options = res.data.returnObj
+          }
+        }
+        ).catch(res => {
+        })
+      }
+    },
+    submit () {
+      this.$axios({
+        method: 'post',
+        url: '/takeOut/setDelivery',
+        data: this.personForm
+      }).then(res => {
+        if (res.data.isLogin === 'true') {
+          this.getTable({
+            'pageInfo': this.pageInfo,
+            'loginName': this.loginName
+          })
+          this.$message({
+            message: '操作成功',
+            type: 'success'
+          })
+        } else {
+          this.$message({
+            message: '操作失败',
+            type: 'success'
+          })
+        }
+      }
+      ).catch(res => {
+      })
+      this.clearUpload()
+    },
+    clearUpload () {
+      this.personForm = {}
+      this.state = false
     }
   }
 }
