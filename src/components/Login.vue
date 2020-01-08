@@ -55,6 +55,7 @@ export default {
             if (typeof res.data !== 'undefined' && res.data.isLogin === 'true') {
               store.saveToken(res.data.token)
               store.saveLastLoginTime(res.data.tokenCreatedTime)
+              store.saveVisitNum(res.data.tokenExpiryTime)
               this.$router.replace({
                 path: '/index',
                 name: 'Index',

@@ -4,6 +4,7 @@ const USERNAME = 'username'
 const IMGURL = 'imgurl'
 const TOKEN = 'token'
 const LASTLOGINTIME = 'lastLoginTime'
+const VISIT_NUM = 'visitNum'
 export default {
   fetch: function() {
     return window.JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '[]')
@@ -40,5 +41,12 @@ export default {
   },
   saveLastLoginTime: function (time) {
     window.localStorage.setItem(LASTLOGINTIME, window.JSON.stringify(time))
+  },
+  getVisitNum: function () {
+    return window.JSON.parse(window.localStorage.getItem(VISIT_NUM) || '[]')
+  },
+  saveVisitNum: function (visit) {
+    window.localStorage.setItem(VISIT_NUM, window.JSON.stringify(visit))
   }
+
 }

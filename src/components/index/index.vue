@@ -21,11 +21,11 @@
         </el-card>
         <el-card shadow="hover" style="height:252px;">
           <div slot="header" class="clearfix">
-            <span>语言详情</span>
-          </div>Vue
-          <el-progress :percentage="71.3" color="#42b983"></el-progress>JavaScript
-          <el-progress :percentage="24.1" color="#f1e05a"></el-progress>CSS
-          <el-progress :percentage="13.7"></el-progress>HTML
+            <span>人员分布</span>
+          </div>服务员
+          <el-progress :percentage="71.3" color="#42b983"></el-progress>骑手
+          <el-progress :percentage="24.1" color="#f1e05a"></el-progress>厨师
+          <el-progress :percentage="13.7"></el-progress>店长
           <el-progress :percentage="5.9" color="#f56c6c"></el-progress>
         </el-card>
       </el-col>
@@ -36,7 +36,7 @@
               <div class="grid-content grid-con-1">
                 <i class="el-icon-lx-people grid-con-icon"></i>
                 <div class="grid-cont-right">
-                  <div class="grid-num">1234</div>
+                  <div class="grid-num">{{visitNum}}</div>
                   <div>用户访问量</div>
                 </div>
               </div>
@@ -47,7 +47,7 @@
               <div class="grid-content grid-con-2">
                 <i class="el-icon-lx-notice grid-con-icon"></i>
                 <div class="grid-cont-right">
-                  <div class="grid-num">321</div>
+                  <div class="grid-num">18</div>
                   <div>系统消息</div>
                 </div>
               </div>
@@ -58,8 +58,8 @@
               <div class="grid-content grid-con-3">
                 <i class="el-icon-lx-goods grid-con-icon"></i>
                 <div class="grid-cont-right">
-                  <div class="grid-num">5000</div>
-                  <div>数量</div>
+                  <div class="grid-num">{{infoData.orderNum}}</div>
+                  <div>订单数量</div>
                 </div>
               </div>
             </el-card>
@@ -120,8 +120,22 @@ export default {
     this.imgUrl = this.$route.params.userInfo.image
     this.lastLoginTime = this.$route.params.lastLoginTime
   },
+  mounted () {
+    this.$axios({
+      method: 'post',
+      url: '/home/info'
+    }).then(res => {
+      this.infoData.orderNum = res.data.returnObj.orderNum
+    }
+    ).catch(res => {
+    })
+  },
   data () {
     return {
+      infoData: {
+        orderNum: ''
+      },
+      visitNum: store.getVisitNum(),
       lastLoginTime: store.getLastLoginTime(),
       userRole: store.getRole(),
       realName: store.fetch(),
