@@ -19,14 +19,15 @@
             <span>南京</span>
           </div>
         </el-card>
-        <el-card shadow="hover" style="height:252px;">
+        <el-card shadow="hover" style="height:252px;" >
           <div slot="header" class="clearfix">
             <span>人员分布</span>
-          </div>服务员
-          <el-progress :percentage="71.3" color="#42b983"></el-progress>骑手
-          <el-progress :percentage="24.1" color="#f1e05a"></el-progress>厨师
-          <el-progress :percentage="13.7"></el-progress>店长
-          <el-progress :percentage="5.9" color="#f56c6c"></el-progress>
+          </div>
+          <div v-for="item in infoData.percent" :key="item">
+          {{item.role}}
+          <el-progress :percentage="item.percent" :color="item.color">
+          </el-progress>
+          </div>
         </el-card>
       </el-col>
       <el-col :span="16">
@@ -125,7 +126,12 @@ export default {
       method: 'post',
       url: '/home/info'
     }).then(res => {
-      this.infoData.orderNum = res.data.returnObj.orderNum
+      this.infoData = res.data.returnObj
+      for (let index in this.infoData.percent) {
+        this.infoData.percent[index].color = this.color[index]
+        let percent = this.infoData.percent[index].percent
+        this.infoData.percent[index].percent = percent.replace('%', '')
+      }
     }
     ).catch(res => {
     })
@@ -133,8 +139,8 @@ export default {
   data () {
     return {
       infoData: {
-        orderNum: ''
       },
+      color: ['#42b983', '#f1e05a', 'red', '#f56c6c'],
       visitNum: store.getVisitNum(),
       lastLoginTime: store.getLastLoginTime(),
       userRole: store.getRole(),
