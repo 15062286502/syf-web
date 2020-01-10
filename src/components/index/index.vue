@@ -130,7 +130,9 @@ export default {
       for (let index in this.infoData.percent) {
         this.infoData.percent[index].color = this.color[index]
         let percent = this.infoData.percent[index].percent
-        this.infoData.percent[index].percent = percent.replace('%', '')
+        this.infoData.percent[index].percent = percent.replace('%', '').trim()
+        this.options.labels = res.data.returnObj.dayNum
+        this.options.datasets = res.data.returnObj.dayBottom
       }
     }
     ).catch(res => {
@@ -173,56 +175,14 @@ export default {
           status: true
         }
       ],
-      data: [
-        {
-          name: '2018/09/04',
-          value: 1083
-        },
-        {
-          name: '2018/09/05',
-          value: 941
-        },
-        {
-          name: '2018/09/06',
-          value: 1139
-        },
-        {
-          name: '2018/09/07',
-          value: 816
-        },
-        {
-          name: '2018/09/08',
-          value: 327
-        },
-        {
-          name: '2018/09/09',
-          value: 228
-        },
-        {
-          name: '2018/09/10',
-          value: 1065
-        }
-      ],
       options: {
         type: 'bar',
         title: {
-          text: '最近一周各品类销售图'
+          text: '近七天订单量(仅显示有数据的)'
         },
         xRorate: 25,
-        labels: ['周一', '周二', '周三', '周四', '周五'],
+        labels: [],
         datasets: [
-          {
-            label: '家电',
-            data: [234, 278, 270, 190, 230]
-          },
-          {
-            label: '百货',
-            data: [164, 178, 190, 135, 160]
-          },
-          {
-            label: '食品',
-            data: [144, 198, 150, 235, 120]
-          }
         ]
       },
       options2: {
@@ -252,43 +212,8 @@ export default {
     Schart
   },
   computed: {
-    role () {
-      return this.name === 'admin' ? '超级管理员' : '普通用户'
-    }
   },
-  // created() {
-  //     this.handleListener();
-  //     this.changeDate();
-  // },
-  // activated() {
-  //     this.handleListener();
-  // },
-  // deactivated() {
-  //     window.removeEventListener('resize', this.renderChart);
-  //     bus.$off('collapse', this.handleBus);
-  // },
   methods: {
-    changeDate () {
-      const now = new Date().getTime()
-      this.data.forEach((item, index) => {
-        const date = new Date(now - (6 - index) * 86400000)
-        item.name = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
-      })
-    }
-    // handleListener() {
-    //     bus.$on('collapse', this.handleBus);
-    //     // 调用renderChart方法对图表进行重新渲染
-    //     window.addEventListener('resize', this.renderChart);
-    // },
-    // handleBus(msg) {
-    //     setTimeout(() => {
-    //         this.renderChart();
-    //     }, 200);
-    // },
-    // renderChart() {
-    //     this.$refs.bar.renderChart();
-    //     this.$refs.line.renderChart();
-    // }
   }
 }
 </script>
