@@ -118,7 +118,7 @@
               <el-tag :type="scope.row.state=='0'?'danger':'success'" :underline="false">{{scope.row.state==='0'?'制餐中':'已完成'}}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="操作"   width="240">
+          <el-table-column label="操作"   width="250">
             <template slot-scope="scope">
               <el-button
                 type="success"

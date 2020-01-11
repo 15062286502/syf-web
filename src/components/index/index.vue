@@ -180,7 +180,7 @@ export default {
         title: {
           text: '近七天订单量(仅显示有数据的)'
         },
-        xRorate: 25,
+        xRorate: 10,
         labels: [],
         datasets: [
         ]
