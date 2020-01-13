@@ -133,6 +133,8 @@ export default {
         this.infoData.percent[index].percent = percent.replace('%', '').trim()
         this.options.labels = res.data.returnObj.dayNum
         this.options.datasets = res.data.returnObj.dayBottom
+        this.options2.labels = res.data.returnObj.monthNum
+        this.options2.datasets = res.data.returnObj.monthBottom
       }
     }
     ).catch(res => {
@@ -148,30 +150,29 @@ export default {
       userRole: store.getRole(),
       realName: store.fetch(),
       imgUrl: store.getImgUrl(),
-      name: '超级管理员',
       todoList: [
         {
-          title: '今天要修复100个bug',
+          title: '今日有新的未处理外卖订单',
           status: false
         },
         {
-          title: '今天要修复100个bug',
+          title: '今日有新的未处理店内',
           status: false
         },
         {
-          title: '今天要写100行代码加几个bug吧',
+          title: '新增一个商品',
           status: false
         },
         {
-          title: '今天要修复100个bug',
+          title: '21：00打烊',
           status: false
         },
         {
-          title: '今天要修复100个bug',
+          title: '日销量达20',
           status: true
         },
         {
-          title: '今天要写100行代码加几个bug吧',
+          title: '日完成订单15',
           status: true
         }
       ],
@@ -188,22 +189,10 @@ export default {
       options2: {
         type: 'line',
         title: {
-          text: '最近几个月各品类销售趋势图'
+          text: '近5个月销量(仅展示有数据的月份)'
         },
-        labels: ['6月', '7月', '8月', '9月', '10月'],
+        labels: [],
         datasets: [
-          {
-            label: '家电',
-            data: [234, 278, 270, 190, 230]
-          },
-          {
-            label: '百货',
-            data: [164, 178, 150, 135, 160]
-          },
-          {
-            label: '食品',
-            data: [74, 118, 200, 235, 90]
-          }
         ]
       }
     }
