@@ -21,6 +21,9 @@
         <div id="transfer">
           <el-transfer v-model="value" :data="data"></el-transfer>
         </div>
+        <div id="role">
+          <el-button type="primary"  @click="modifity ()">确认授权</el-button>
+        </div>
       </el-main>
     </el-container>
   </div>
@@ -43,7 +46,35 @@ export default {
         url: '/home/getMenuByRole',
         data: this.selectRole
       }).then(res => {
+        this.data = res.data.returnObj.all
+        this.value = res.data.returnObj.already
       })
+    },
+    modifity () {
+      if (this.selectRole === '') {
+        this.$message({
+          message: '请选择角色',
+          type: 'warning'
+        })
+      } else {
+        this.$axios({
+          method: 'post',
+          url: '/home/setMenuByRole',
+          data: [this.selectRole, this.value]
+        }).then(res => {
+          if (res.data.isLogin === 'true') {
+            this.$message({
+              message: '授权成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '授权失败',
+              type: 'error'
+            })
+          }
+        })
+      }
     }
   }
 }
@@ -58,6 +89,9 @@ export default {
     text-align: left;
   }
   #transfer{
+    margin-top: 30px;
+  }
+  #role{
     margin-top: 30px;
   }
 </style>
