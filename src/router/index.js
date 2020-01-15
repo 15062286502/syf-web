@@ -11,6 +11,7 @@ import foodManagnement from '@/components/foods/FoodManagement'
 import takeIn from '@/components/takeInOrder/takeInManagement'
 import takeOut from '@/components/takeOutOrder/takeOutManagement'
 import role from '@/components/user/Role'
+import foodImport from '@/components/foods/FoodImport'
 Vue.use(Router)
 
 export default new Router({
@@ -70,6 +71,11 @@ export default new Router({
           path: '/role',
           name: 'Role',
           component: role
+        },
+        {
+          path: '/import',
+          name: 'FoodImport',
+          component: foodImport
         }
       ]
     },

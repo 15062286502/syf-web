@@ -105,7 +105,7 @@ export default {
     beforeAvatarFileUpload (file) {
       let extension = file.name.substring(file.name.lastIndexOf('.') + 1)
       let size = file.size / 1024 / 1024
-      if (extension === 'jpg' & size < 2) {
+      if (extension === 'jpg' && size < 2) {
         let formData = new FormData()
         formData.append('file', file)
         formData.append('userName', this.userName)
